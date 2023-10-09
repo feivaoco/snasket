@@ -60,12 +60,10 @@ void setup_snake(Nodo_t *cabeza){
     vel = 4.0;
     se_comio = 0;
     comida_x = GetRandomValue(0 + 10, GetScreenWidth() - 10);
-    comida_y = GetRandomValue(0 + 10, GetScreenHeight() - 10);
-    
+    comida_y = GetRandomValue(0 + 10, GetScreenHeight() - 10);   
 }
 
 void update_snake(Nodo_t *cabeza){
-    
     if(IsKeyDown(KEY_D)) dir = dir == 1 ? 1:0;
     if(IsKeyDown(KEY_A)) dir = dir == 0 ? 0:1;
     if(IsKeyDown(KEY_W)) dir = dir == 3 ? 3:2;
@@ -73,6 +71,8 @@ void update_snake(Nodo_t *cabeza){
     cabeza->last_x = cabeza->x;
     cabeza->last_y = cabeza->y;
     if(cabeza->sig != NULL){
+        cabeza->sig->last_x = cabeza->sig->x;
+        cabeza->sig->last_y = cabeza->sig->y;
         cabeza->sig->x = cabeza->last_x;
         cabeza->sig->y = cabeza->last_y;
     }
@@ -90,14 +90,20 @@ void update_snake(Nodo_t *cabeza){
             cabeza->y += vel;
             break;
     }
-    if (cabeza->y > GetScreenHeight()+10) cabeza->y = 0;
-    if (cabeza->y < -10) cabeza->y = GetScreenHeight();
-    if (cabeza->x > GetScreenWidth()+10) cabeza->x = 0;
-    if (cabeza->x < -10) cabeza->x = GetScreenWidth();
+    if (cabeza->y > GetScreenHeight()+5) cabeza->y = 0;
+    if (cabeza->y < - 5) cabeza->y = GetScreenHeight();
+    if (cabeza->x > GetScreenWidth()+5) cabeza->x = 0;
+    if (cabeza->x < -5) cabeza->x = GetScreenWidth();
     uint8_t si_sig = 0;
     Nodo_t *nc = cabeza;
     while(nc->sig !=NULL){
         nc = nc->sig;
+        if(nc->sig != NULL){
+            nc->sig->last_x = nc->sig->x;
+            nc->sig->last_y = nc->sig->y;
+            nc->sig->x = nc->last_x;
+            nc->sig->y = nc->last_y;     
+        }
          
     
         
