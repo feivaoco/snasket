@@ -4,7 +4,6 @@
 #include <stdlib.h>
 typedef struct Nodo_t{
     struct Nodo_t *sig;
-    struct Nodo_t *ant;
     float x;
     float y;
     float last_x;
@@ -35,7 +34,6 @@ int main(void){
     SetTargetFPS(60);
     
     Nodo_t* cabeza = malloc(sizeof(Nodo_t));
-    Nodo_t* cola   = malloc(sizeof(Nodo_t));
     cabeza->sig = NULL;
     
     
@@ -68,14 +66,32 @@ void setup_snake(Nodo_t *cabeza){
     nodos_cantidad = 0;
     comida_x = GetRandomValue(0 + 10, GetScreenWidth() - 10);
     comida_y = GetRandomValue(0 + 10, GetScreenHeight() - 10);   
-    
+    if(cabeza->sig != NULL){
+        Nodo_t *tmp = cabeza->sig;
+        Nodo_t *tmp_borrar;
+        cabeza->sig = NULL;
+        while(1){
+            tmp_borrar = tmp;
+            if(tmp->sig == NULL){
+                tmp = NULL;
+                free(tmp_borrar);
+                break;
+            }else {
+                tmp = tmp->sig;
+                free(tmp_borrar);
+            }
+        }
+
+        
+    } 
 }
 
 void update_snake(Nodo_t *cabeza){
-    if(IsKeyDown(KEY_D)) dir = dir == 1 ? 1:0;
-    if(IsKeyDown(KEY_A)) dir = dir == 0 ? 0:1;
-    if(IsKeyDown(KEY_W)) dir = dir == 3 ? 3:2;
-    if(IsKeyDown(KEY_S)) dir = dir == 2 ? 2:3;
+    if(IsKeyDown(KEY_I)) setup_snake(cabeza);
+    if(IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) dir = dir == 1 ? 1:0;
+    if(IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) dir = dir == 0 ? 0:1;
+    if(IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) dir = dir == 3 ? 3:2;
+    if(IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) dir = dir == 2 ? 2:3;
     cabeza->last_x = cabeza->x;
     cabeza->last_y = cabeza->y;
     if(cabeza->sig != NULL){
