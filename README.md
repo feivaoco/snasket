@@ -12,9 +12,7 @@
 #### El compilador utilizado de gcc es del [w64devkit](https://github.com/skeeto/w64devkit).
 #### Al igual que el GNU Make es parte de ese kit.
 
-Creo que no nada mas que decir. El proyecto es una prueba de 
-porfin hacer un jueguito en raylib e integrar Pure Data mediante 
-la libreria de libpd. 
+El proyecto es una prueba de porfin hacer un jueguito en raylib e integrar Pure Data mediante la libreria de libpd. 
 
 Si no te sirve la compilacion aun usando w64devkit entonces debes
 realizar lo siguiente:
