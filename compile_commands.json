@@ -1,6 +1,6 @@
 [
   { "directory": "D:/codigos/c/raylib/snasket",
     "arguments": ["gcc", "-Iinclude", "-Llib", "-c", "-o", "bin/main.o", "src/main.c"],
-    "file": "src/main.c" },
+    "file": "src/main.c" }
 
 ]

@@ -1,4 +1,4 @@
-#include "raylib.h"
+#include "ray/raylib.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +26,9 @@ uint8_t se_comio;
 uint8_t dir;
 int nodos_aniadir;
 uint32_t nodos_cantidad;
+Nodo_t *nodo15;
+Nodo_t *nodos_colision;
+
 int main(void){
     
     const int screenWidth = 800;
@@ -81,8 +84,6 @@ void setup_snake(Nodo_t *cabeza){
                 free(tmp_borrar);
             }
         }
-
-        
     } 
 }
 
@@ -120,7 +121,11 @@ void update_snake(Nodo_t *cabeza){
     if (cabeza->x < -5) cabeza->x = GetScreenWidth();
     uint8_t si_sig = 0;
     Nodo_t *nc = cabeza;
+    nodos_cantidad = 0;
     while(nc->sig !=NULL){
+        nodos_cantidad += 1;
+        if(nodos_cantidad==15)
+            nodo15 = nc;
         nc = nc->sig;
         if(nc->sig != NULL){
             nc->sig->last_x = nc->sig->x;
@@ -128,57 +133,41 @@ void update_snake(Nodo_t *cabeza){
             nc->sig->x = nc->last_x;
             nc->sig->y = nc->last_y;     
         }
-        
     }
     if(nodos_aniadir > 0){
-        
         nc->sig = malloc(sizeof(Nodo_t));
         nc->sig->y = nc->last_y; 
         nc->sig->x = nc->last_x; 
         nc->sig->sig = NULL;
-    
         nodos_aniadir -= 1;
         if(nodos_aniadir < 0) nodos_aniadir = 0;
-    }
-    
-    
-
-    if(CheckCollisionRecs((Rectangle){cabeza->x-10,cabeza->y-10,20,20}, (Rectangle){comida_x-4,comida_y-4,8,8})){
+    }    
+    if(CheckCollisionRecs((Rectangle){cabeza->x-7,cabeza->y-7,14,14}, 
+                          (Rectangle){comida_x-11,comida_y-11,22,22})){
         comida_x = GetRandomValue(0 + 10, GetScreenWidth() - 10);
         comida_y = GetRandomValue(0 + 10, GetScreenHeight() - 10);
         nodos_aniadir += 5;
-        nodos_cantidad += 5;
-        //vel *= 1.01;
-        /*uint8_t se_aniadio_nodo = 0; 
-        while(!se_aniadio_nodo){
-            if(nc->sig == NULL){
-                nc->sig = malloc(sizeof(Nodo_t));
-                nc->sig->y = nc->last_y;
-                nc->sig->x = nc->last_x;
-                nc->sig->sig = NULL;
-                se_aniadio_nodo = 1;     
-            }else{
-                nc = nc->sig;
-            }
-        } */       
     }
-        
+
     
     
 }
-
-
 void draw_snake(Nodo_t *cabeza){
     DrawText(TextFormat("%i",nodos_cantidad), 20, GetScreenHeight() - 50, 50, SKYBLUE);
-    //DrawRectangleRec((Rectangle){cabeza.x-10,cabeza.y-10,20,20}, GREEN);
     DrawCircle(cabeza->x,cabeza->y, 10, BLUE);
     Nodo_t *nc = cabeza;
     while(nc->sig != NULL){
         DrawCircle(nc->sig->x,nc->sig->y, 10, BLUE);;
         nc = nc->sig;
     }
-    
-    DrawCircle(comida_x,comida_y, 8, RED);
-        
-    
+    DrawCircle(comida_x,comida_y, 8, BLACK);
+    DrawRectangleLinesEx((Rectangle){comida_x-11,comida_y-11,22,22},1, RED);    
+    DrawRectangleLinesEx((Rectangle){cabeza->x-7,cabeza->y-7,14,14},1, RED);
+    if(nodo15!=NULL){
+        nc = nodo15;
+        while(nc->sig !=NULL){
+            DrawRectangleLinesEx((Rectangle){nc->sig->x-4,nc->sig->y-4,8,8}, 1, RED);;
+            nc = nc -> sig;
+        }
+    } 
 }
