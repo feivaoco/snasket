@@ -9,10 +9,11 @@
 
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
-   
+    // tamanio de la ventana
     jueguito_vars->sH = 450;
     jueguito_vars->sW = 800;
     
+    // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     jueguito_vars->dir = 0;
     jueguito_vars->velocidad = 6;
@@ -20,15 +21,17 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     jueguito_vars->nodos_aniadir = 0;
     jueguito_vars->nodos_cantidad = 0;
 
+    // inicializacion de la posicion de la comida
     jueguito_vars->comida_x = GetRandomValue(0+10, jueguito_vars->sW - 10);
     jueguito_vars->comida_y = GetRandomValue(0+10, jueguito_vars->sH - 10);
 
+    // inicializacion de la posicion de la serpiente y poner null en su sig
     snake_cabeza->x = (f32)jueguito_vars->sW/4;
     snake_cabeza->y = (f32)jueguito_vars->sH/4;
     snake_cabeza->sig = NULL;
 
     
-
+    // inicializacion de los recs colliders
     jueguito_vars->coll_cabeza = (Rectangle){snake_cabeza->x-7,
                                              snake_cabeza->y-7,
                                              14,
@@ -39,6 +42,8 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
                                              22,
                                              22};
 
+    // por si el juego ya habia empezado entonces se borran todos los nodos
+    // que la serpiente tenia
     if(snake_cabeza->sig != NULL){
         nodoSnake_t *tmp = snake_cabeza->sig;
         nodoSnake_t *tmp_borrar;
@@ -59,6 +64,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
 }
 
 void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
+    // esto para comparar si se cambio de direccion para saber si poner un nodo mas en los nodos colliders
     jueguito_vars->dir_anterior = jueguito_vars->dir;
 
     // Reiniciar el jueguito
@@ -70,6 +76,8 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     if(IsKeyPressed(KEY_W)||IsKeyPressed(KEY_UP)) jueguito_vars->dir = jueguito_vars->dir == 3 ? 3:2;
     if(IsKeyPressed(KEY_S)||IsKeyPressed(KEY_DOWN)) jueguito_vars->dir = jueguito_vars->dir == 2 ? 2:3;
 
+
+    
     snake_cabeza->last_x = snake_cabeza->x;
     snake_cabeza->last_y = snake_cabeza->y;
 
@@ -146,11 +154,13 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
 void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     
     DrawCircle(snake_cabeza->x,snake_cabeza->y,10,BLUE);
+
     nodoSnake_t *nodo_temp = snake_cabeza;
     while(nodo_temp->sig != NULL){
         DrawCircle(nodo_temp->sig->x,nodo_temp->sig->y,10,BLUE);
         nodo_temp = nodo_temp->sig;
     }
+    
     DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,8,BLACK);
 
     DrawRectangleLinesEx(jueguito_vars->coll_cabeza,1,RED);
