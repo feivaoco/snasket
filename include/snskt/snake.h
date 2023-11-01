@@ -45,7 +45,8 @@ typedef struct jueguito_t{
     Rectangle coll_cabeza;
     Rectangle coll_comida;
 
-    
+    // lista de nodos para los colliders
+    nodoSnake_t *nodo_collider;    
 }jueguito_t;
 
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars);

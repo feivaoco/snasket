@@ -6,15 +6,11 @@
 #include "stdio.h"
 
 int main(void){
-    
-
     // SETUP SNAKE
     nodoSnake_t* snake_p = MemAlloc(sizeof(nodoSnake_t));
     jueguito_t* jueguito_vars = MemAlloc(sizeof(jueguito_t));
-
-    
+    snake_p->sig = NULL;
     setup_snake(snake_p, jueguito_vars);
-    
     /////////////
     
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
@@ -23,10 +19,10 @@ int main(void){
     while (!WindowShouldClose()){
         // UPDATE SNAKE
         update_snake(snake_p, jueguito_vars);
-        
         /////////////
+
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(LIGHTGRAY);
 
         // DRAW SNAKE
         draw_snake(snake_p, jueguito_vars);
