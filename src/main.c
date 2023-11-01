@@ -3,14 +3,18 @@
 #include <stdlib.h>
 #include "defs.h"
 #include "snskt/snake.h"
+#include "stdio.h"
 
 int main(void){
     
 
     // SETUP SNAKE
-    nodoSnake_t* snake_p = malloc(sizeof(nodoSnake_t));
-    jueguito_t* jueguito_vars = malloc(sizeof(jueguito_t));
+    nodoSnake_t* snake_p = MemAlloc(sizeof(nodoSnake_t));
+    jueguito_t* jueguito_vars = MemAlloc(sizeof(jueguito_t));
+
+    
     setup_snake(snake_p, jueguito_vars);
+    
     /////////////
     
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
@@ -29,9 +33,11 @@ int main(void){
 
         /////////////
 
-        DrawFPS(0, 0);        
+        DrawFPS(5, 5);        
         EndDrawing();
     }
-    CloseWindow();       
+    CloseWindow();   
+    MemFree(snake_p);
+    MemFree(jueguito_vars);    
     return 0;
 }
