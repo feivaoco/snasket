@@ -3,13 +3,16 @@ Titulo inspirado en "Caskets" del NehruvianDOOM
 
 
 
-### Dependencias y compilarlo
+
 ##### raylib
 <https://github.com/raysan5/raylib>
 ##### libpd
 <https://github.com/libpd/libpd>
 ##### portaudio
 <https://github.com/PortAudio/portaudio>
+##### msf_gif
+<https://github.com/notnullnotvoid/msf_gif>
+
 
 ###### Todas las dependencias se encuentran en este mismo repositorio
 ###### El compilador utilizado de gcc es del [w64devkit](https://github.com/skeeto/w64devkit).
