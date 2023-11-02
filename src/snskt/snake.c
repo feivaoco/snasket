@@ -3,7 +3,7 @@
 #include "snskt/snake.h"
 #include "ray/raylib.h"
 #include "stdio.h"
-
+#include "pd/z_libpd.h"
 // si se quiere debugear los colliders
 //#define DEBUG_SNAKE_
 // nodos a aniadir cuando se come
@@ -13,7 +13,7 @@
 // size para el collider de la cabeza
 #define size_coll_cabeza offset_coll_cabeza*2
 // offset de coordenadas para el collider de la comida
-#define offset_coll_comida 25
+#define offset_coll_comida 23
 // size para el collider de la comida
 #define size_coll_comida offset_coll_comida*2
 
@@ -27,7 +27,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     jueguito_vars->dir = 0;
-    jueguito_vars->velocidad = 6;
+    jueguito_vars->velocidad = 350;
     jueguito_vars->estados = 1;
     jueguito_vars->nodos_aniadir = 5;
     jueguito_vars->nodos_cantidad = 0;
@@ -73,6 +73,9 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
 }
 
 void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
+    // Delta time para multiplicar y tener velocidad constante
+    f32 delta_time = GetFrameTime();
+
     // Checar si ya perdio
     if(!(jueguito_vars->estados & 1)){
         setup_snake(snake_cabeza,jueguito_vars);
@@ -128,16 +131,16 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // Cambiar direccion
     switch (jueguito_vars->dir){
         case 0:
-            snake_cabeza->x += jueguito_vars->velocidad;
+            snake_cabeza->x += jueguito_vars->velocidad * delta_time;
             break;
         case 1:
-            snake_cabeza->x -= jueguito_vars->velocidad;
+            snake_cabeza->x -= jueguito_vars->velocidad * delta_time;
             break;
         case 2:
-            snake_cabeza->y -= jueguito_vars->velocidad;
+            snake_cabeza->y -= jueguito_vars->velocidad * delta_time;
             break;
         case 3:
-            snake_cabeza->y += jueguito_vars->velocidad;
+            snake_cabeza->y += jueguito_vars->velocidad * delta_time;
             break;
     }
 
@@ -181,12 +184,13 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     //Checar si colisionan los rectangulos de la cabeza y la comida
     if(CheckCollisionRecs(jueguito_vars->coll_cabeza,
                           jueguito_vars->coll_comida  )){
+        libpd_bang("bColComida");
         jueguito_vars->comida_x = GetRandomValue(0+10, jueguito_vars->sW - 10);
         jueguito_vars->comida_y = GetRandomValue(0+10, jueguito_vars->sH - 10);
         jueguito_vars->coll_comida.x = jueguito_vars->comida_x - offset_coll_comida;
         jueguito_vars->coll_comida.y = jueguito_vars->comida_y - offset_coll_comida;
         jueguito_vars->nodos_aniadir += na;
-    
+        
     }
     
     // Checar si colisiona con su cola

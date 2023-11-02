@@ -1,4 +1,4 @@
-#N canvas 325 275 826 523 12;
+#N canvas 687 232 826 492 12;
 #X obj 85 483 dac~;
 #X text 70 69 colisiona con comida;
 #X obj 91 269 osc~;
@@ -7,7 +7,7 @@
 #X obj 266 152 t b;
 #X obj 207 354 line~;
 #X obj 85 340 *~;
-#X obj 269 98 bng 19 250 50 0 empty empty bang_col_com 0 -10 0 12 #fcfcfc #000000 #000000;
+#X obj 269 98 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
 #X obj 104 379 loadbang;
 #X msg 104 407 0.1;
 #X obj 112 99 loadbang;
@@ -21,6 +21,8 @@
 #X obj 45 231 * 8;
 #X msg 267 203 0 10;
 #X msg 138 312 1;
+#X obj 363 67 r bColComida;
+#X msg 451 142 \; bColComida bang;
 #X connect 2 0 16 1;
 #X connect 3 0 0 1;
 #X connect 3 0 0 0;
@@ -45,3 +47,4 @@
 #X connect 19 0 15 0;
 #X connect 20 0 6 0;
 #X connect 20 0 13 0;
+#X connect 22 0 8 0;

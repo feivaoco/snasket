@@ -40,6 +40,7 @@ void sleep_ms(int ms);
 void pdprint(const char *s);
 void pdnoteon(int ch, int pitch, int vel);
 
+void bang_collider_comida();
 #endif // PD_HANDLER_H_
 
 
@@ -96,5 +97,7 @@ void pdprint(const char *s) {
 void pdnoteon(int ch, int pitch, int vel) {
   printf("noteon: %d %d %d\n", ch, pitch, vel);
 }
+
+
 
 #endif //PD_HANDLER_IMPL

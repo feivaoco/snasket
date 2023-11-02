@@ -28,7 +28,7 @@ typedef struct jueguito_t{
     // 8 bit 3 - 
     u8 estados;
     // velocidad del snake
-    u8 velocidad;   
+    f32 velocidad;   
     // tamaño de ventana
     s32 sW;
     s32 sH;
