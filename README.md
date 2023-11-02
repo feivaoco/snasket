@@ -1,16 +1,19 @@
 # SNASKET
-### Titulo inspirado en "Caskets" del NehruvianDOOM
+Titulo inspirado en "Caskets" del NehruvianDOOM
 
-#### raylib
+
+
+### Dependencias y compilarlo
+##### raylib
 <https://github.com/raysan5/raylib>
-#### libpd
+##### libpd
 <https://github.com/libpd/libpd>
-#### portaudio
+##### portaudio
 <https://github.com/PortAudio/portaudio>
 
-#### Todas las dependencias se encuentran en este mismo repositorio
-#### El compilador utilizado de gcc es del [w64devkit](https://github.com/skeeto/w64devkit).
-#### Al igual que el GNU Make es parte de ese kit.
+###### Todas las dependencias se encuentran en este mismo repositorio
+###### El compilador utilizado de gcc es del [w64devkit](https://github.com/skeeto/w64devkit).
+###### Al igual que el GNU Make es parte de ese kit.
 
 El proyecto es una prueba de porfin hacer un jueguito en raylib e integrar Pure Data mediante la libreria de libpd. 
 

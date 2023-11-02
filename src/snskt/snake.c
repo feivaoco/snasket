@@ -214,7 +214,7 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // Dibujar score
     DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,SKYBLUE);
     //DrawText(TextFormat("%i",jueguito_vars->estados), jueguito_vars->sW-20, jueguito_vars->sH-50,50,RED);
-
+    
     
 }
 
