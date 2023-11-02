@@ -1,10 +1,11 @@
 # SNASKET
 Titulo inspirado en "Caskets" del NehruvianDOOM
 
-![demostracion gif](demos_gif/gif_snasket_1698959066.gif)
 
+![gif_snasket_1698959066](https://github.com/feivaoco/assets_repositorios/assets/52841258/bdb49bba-ab3d-44cc-a8e6-eb9bbfd2390d)
 
-https://github.com/feivaoco/snasket/assets/52841258/d806c2d1-573e-4773-bbfb-7bfd2fd2197c
+https://github.com/feivaoco/assets_repositorios/assets/52841258/8883836b-9451-4015-8d39-9688a66d0741
+
 
 
 
