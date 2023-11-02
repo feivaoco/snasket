@@ -47,6 +47,10 @@ typedef struct jueguito_t{
 
     // lista de nodos para los colliders
     nodoSnake_t *nodo_collider;    
+
+    // tiempo de espera para aniadir un nodo
+    f32 tiempo_aniadir_nodo;
+
 }jueguito_t;
 
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars);

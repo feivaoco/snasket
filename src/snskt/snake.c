@@ -7,7 +7,7 @@
 // si se quiere debugear los colliders
 //#define DEBUG_SNAKE_
 // nodos a aniadir cuando se come
-#define na 5
+#define na 2
 // offset de coordenadas para el collider de la cabeza
 #define offset_coll_cabeza 3
 // size para el collider de la cabeza
@@ -27,11 +27,12 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     jueguito_vars->dir = 0;
-    jueguito_vars->velocidad = 350;
+    jueguito_vars->velocidad = 280;
     jueguito_vars->estados = 1;
-    jueguito_vars->nodos_aniadir = 5;
+    jueguito_vars->nodos_aniadir = 2;
     jueguito_vars->nodos_cantidad = 0;
     jueguito_vars->nodo_collider = NULL;
+    jueguito_vars->tiempo_aniadir_nodo = 0;
 
     // inicializacion de la posicion de la comida
     jueguito_vars->comida_x = GetRandomValue(0+10, jueguito_vars->sW - 10);
@@ -104,18 +105,22 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
         case KEY_D:
         case KEY_RIGHT:
             jueguito_vars->dir = jueguito_vars->dir == 1 ? 1:0;
+            libpd_bang("bBD");
             break;
         case KEY_A:
         case KEY_LEFT:
             jueguito_vars->dir = jueguito_vars->dir == 0 ? 0:1;
+            libpd_bang("bSn");
             break;
         case KEY_W:
         case KEY_UP:
             jueguito_vars->dir = jueguito_vars->dir == 3 ? 3:2;
+            libpd_bang("bHH");
             break;
         case KEY_S:
         case KEY_DOWN:
             jueguito_vars->dir = jueguito_vars->dir == 2 ? 2:3;
+            libpd_bang("bCB");
             break;
         default:
             break;
@@ -167,13 +172,22 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
         }
     }
 
+    // Bloque de codigo para aniadir un nodo a la cola
     if(jueguito_vars->nodos_aniadir > 0){
-        nodo_temp->sig = MemAlloc(sizeof(nodoSnake_t));
-        nodo_temp->sig->y = nodo_temp->last_y;
-        nodo_temp->sig->x = nodo_temp->last_x;
-        nodo_temp->sig->sig = NULL;
-        jueguito_vars->nodos_aniadir -= 1;
-        if(jueguito_vars->nodos_aniadir < 0) jueguito_vars->nodos_aniadir = 0;
+        jueguito_vars->tiempo_aniadir_nodo += 1 * GetFrameTime();
+        if(jueguito_vars->tiempo_aniadir_nodo > .3){
+            // Le manda al archivo del puredata abierto un bang como [s bNodo] entonces
+            // un [r bNodo] recibira el bang mandando en esta funcion
+            libpd_bang("bNodo");
+            nodo_temp->sig = MemAlloc(sizeof(nodoSnake_t));
+            nodo_temp->sig->y = nodo_temp->last_y;
+            nodo_temp->sig->x = nodo_temp->last_x;
+            nodo_temp->sig->sig = NULL;
+            jueguito_vars->nodos_aniadir -= 1;
+            if(jueguito_vars->nodos_aniadir < 0) jueguito_vars->nodos_aniadir = 0;
+            jueguito_vars->tiempo_aniadir_nodo = 0;
+        }
+            
     }
 
     jueguito_vars->coll_cabeza.x = snake_cabeza->x-offset_coll_cabeza;
@@ -184,7 +198,11 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     //Checar si colisionan los rectangulos de la cabeza y la comida
     if(CheckCollisionRecs(jueguito_vars->coll_cabeza,
                           jueguito_vars->coll_comida  )){
+
+        // Le manda al archivo del puredata abierto un bang como [s bColComida] entonces
+        // un [r bColComida] recibira el bang mandando en esta funcion
         libpd_bang("bColComida");
+
         jueguito_vars->comida_x = GetRandomValue(0+10, jueguito_vars->sW - 10);
         jueguito_vars->comida_y = GetRandomValue(0+10, jueguito_vars->sH - 10);
         jueguito_vars->coll_comida.x = jueguito_vars->comida_x - offset_coll_comida;
@@ -203,6 +221,11 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
                                 jueguito_vars->coll_cabeza)){
                 // operacion estados AND 1111 1110 es igual a estados ???? ???0
                 jueguito_vars->estados = jueguito_vars->estados & 254; 
+
+                // Le manda al archivo del puredata abierto un bang como [s bMorido] entonces
+                // un [r bMorido] recibira el bang mandando en esta funcion
+                libpd_bang("bMorido");
+
                 break;
             }
             nodo_temp = nodo_temp->sig;
@@ -215,14 +238,15 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
 
 void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // Dibujar serpiente
-    nodoSnake_t *nodo_temp = snake_cabeza;
+    nodoSnake_t *nodo_temp = snake_cabeza->sig;
     while(nodo_temp != NULL){
         DrawCircle(nodo_temp->x,nodo_temp->y,10,BLUE);
         nodo_temp = nodo_temp->sig;
     }
-    
+    DrawCircle(snake_cabeza->x,snake_cabeza->y,10,(Color){ 0, 85, 165, 255 });
+
     // Dibujar comida
-    DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,15,BLACK);
+    DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,15,LIME);
 
     #ifdef DEBUG_SNAKE_
     // Para dibujar los colliders
@@ -243,7 +267,7 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     #endif //DEBUG_SNAKE_
 
     // Dibujar score
-    DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,SKYBLUE);
+    DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,DARKBLUE);
     //DrawText(TextFormat("%i",jueguito_vars->estados), jueguito_vars->sW-20, jueguito_vars->sH-50,50,RED);
     
     
