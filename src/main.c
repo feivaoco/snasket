@@ -3,12 +3,19 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
+
 
 #include "defs.h"
 #include "snskt/snake.h"
-#include "stdio.h"
 
+
+//#define GRABAR_
+#ifdef GRABAR_ 
+#include <time.h>
+#define TIEMPO_LAPSO_GIF .1
 #include "msf_gif.h"
+#endif //GRABAR_ 
 
 
 int main(void){
@@ -20,19 +27,21 @@ int main(void){
     f32 segundoFrame = 0;
     /////////////
     
+    #ifdef GRABAR_ 
     // SETUP GIF RECORDER
     s32 centisecondsPerFrame = 5, bitDepth = 16;
     MsfGifState gifState;
     msf_gif_begin(&gifState, jueguito_vars->sW, jueguito_vars->sH);
     /////////////////////
+    #endif //GRABAR_ 
 
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
     SetTargetFPS(60);
     
     while (!WindowShouldClose()){
-
+        #ifdef GRABAR_ 
         segundoFrame += GetFrameTime();
-
+        #endif //GRABAR_ 
         // UPDATE SNAKE
         update_snake(snake_p, jueguito_vars);
         /////////////
@@ -50,26 +59,31 @@ int main(void){
         EndDrawing();
         //¬/////////////////
 
-        if(segundoFrame > .2){
+        #ifdef GRABAR_ 
+        if(segundoFrame > TIEMPO_LAPSO_GIF){
             // Grabar la pantalla para el gif
             msf_gif_frame(&gifState, rlReadScreenPixels(jueguito_vars->sW,jueguito_vars->sH), centisecondsPerFrame, bitDepth, jueguito_vars->sW * 4);
             segundoFrame = 0;
         }
-        
+        #endif //GRABAR_ 
     }
+
     CloseWindow();   
 
+    #ifdef GRABAR_ 
     // Genera gif
     MsfGifResult result = msf_gif_end(&gifState);
     if (result.data) {
-        FILE * fp = fopen("MyGif.gif", "wb");
+        time_t now = time(NULL);
+        const char * gif_path =TextFormat("../demos_gif/gif_snasket_%d.gif", (u32)now);
+        FILE * fp = fopen(gif_path, "wb");
         fwrite(result.data, result.dataSize, 1, fp);
         fclose(fp);
     }
-
     // Libera el espacio de memoria del resultado del gif
     msf_gif_free(result);
-    
+    #endif //GRABAR_ 
+
     // Libera el espacio de memoria
     MemFree(snake_p);
     MemFree(jueguito_vars);    
