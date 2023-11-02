@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -Llib -lraylib -lopengl32 -lgdi32 -lwinmm
+CFLAGS = -Iinclude -Llib -O3 -lraylib -lopengl32 -lgdi32 -lwinmm  -llibpd -lportaudio
 
 BIN = bin/
 SRC = src/
@@ -12,11 +12,11 @@ $(PROJECT_NAME) : $(OBJS)
 	$(CC) -o $(BIN)$(PROJECT_NAME) $(OBJS) $(CFLAGS) 
 
 $(BIN)main.o : $(SRC)main.c
-	$(CC) -c -o $(BIN)main.o $(SRC)main.c  $(CFLAGS)
+	$(CC) -c -o $(BIN)main.o $(SRC)main.c $(CFLAGS)
 
 
 $(BIN)snake.o : $(SRC)snskt/snake.c
-	$(CC) -c -o $(BIN)snake.o $(SRC)snskt/snake.c  $(CFLAGS)
+	$(CC) -c -o $(BIN)snake.o $(SRC)snskt/snake.c $(CFLAGS)
 
 
 

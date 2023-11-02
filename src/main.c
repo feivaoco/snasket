@@ -8,7 +8,7 @@
 
 #include "defs.h"
 #include "snskt/snake.h"
-
+#include "snskt/pd_handler.h"
 
 //#define GRABAR_
 #ifdef GRABAR_ 
@@ -19,6 +19,12 @@
 
 
 int main(void){
+
+    // SETUP LIBPD
+
+
+    ///////////////
+
     // SETUP SNAKE
     nodoSnake_t* snake_p = MemAlloc(sizeof(nodoSnake_t));
     jueguito_t* jueguito_vars = MemAlloc(sizeof(jueguito_t));
