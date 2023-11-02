@@ -4,16 +4,16 @@
 #include "ray/raylib.h"
 #include "stdio.h"
 
+// si se quiere debugear los colliders
+//#define DEBUG_SNAKE_
 // nodos a aniadir cuando se come
 #define na 5
-
 // offset de coordenadas para el collider de la cabeza
 #define offset_coll_cabeza 3
 // size para el collider de la cabeza
 #define size_coll_cabeza offset_coll_cabeza*2
-
 // offset de coordenadas para el collider de la comida
-#define offset_coll_comida 16
+#define offset_coll_comida 25
 // size para el collider de la comida
 #define size_coll_comida offset_coll_comida*2
 
@@ -22,14 +22,14 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
     // tamanio de la ventana
     jueguito_vars->sH = 700;
-    jueguito_vars->sW = 1000;
+    jueguito_vars->sW = 800;
     
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     jueguito_vars->dir = 0;
     jueguito_vars->velocidad = 6;
     jueguito_vars->estados = 1;
-    jueguito_vars->nodos_aniadir = 0;
+    jueguito_vars->nodos_aniadir = 5;
     jueguito_vars->nodos_cantidad = 0;
     jueguito_vars->nodo_collider = NULL;
 
@@ -44,7 +44,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     // inicializacion de los recs colliders
     jueguito_vars->coll_cabeza = (Rectangle){snake_cabeza->x-offset_coll_cabeza,
                                              snake_cabeza->y-offset_coll_cabeza,
-                                             size_coll_cabeza,
+                                             size_coll_cabeza ,
                                              size_coll_cabeza};
     
     jueguito_vars->coll_comida = (Rectangle){jueguito_vars->comida_x-offset_coll_comida,
@@ -96,12 +96,35 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // Reiniciar el jueguito
     if(IsKeyPressed(KEY_I)) setup_snake(snake_cabeza,jueguito_vars);
     
-    // Input
+    // Input switch
+    switch (GetKeyPressed()){
+        case KEY_D:
+        case KEY_RIGHT:
+            jueguito_vars->dir = jueguito_vars->dir == 1 ? 1:0;
+            break;
+        case KEY_A:
+        case KEY_LEFT:
+            jueguito_vars->dir = jueguito_vars->dir == 0 ? 0:1;
+            break;
+        case KEY_W:
+        case KEY_UP:
+            jueguito_vars->dir = jueguito_vars->dir == 3 ? 3:2;
+            break;
+        case KEY_S:
+        case KEY_DOWN:
+            jueguito_vars->dir = jueguito_vars->dir == 2 ? 2:3;
+            break;
+        default:
+            break;
+    }
+    
+    /*
     if(IsKeyPressed(KEY_D)||IsKeyPressed(KEY_RIGHT)) jueguito_vars->dir = jueguito_vars->dir == 1 ? 1:0;
     if(IsKeyPressed(KEY_A)||IsKeyPressed(KEY_LEFT)) jueguito_vars->dir = jueguito_vars->dir == 0 ? 0:1;
     if(IsKeyPressed(KEY_W)||IsKeyPressed(KEY_UP)) jueguito_vars->dir = jueguito_vars->dir == 3 ? 3:2;
     if(IsKeyPressed(KEY_S)||IsKeyPressed(KEY_DOWN)) jueguito_vars->dir = jueguito_vars->dir == 2 ? 2:3;
-
+    */
+    
     // Cambiar direccion
     switch (jueguito_vars->dir){
         case 0:
@@ -170,7 +193,9 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     if(jueguito_vars->nodo_collider != NULL){
         nodo_temp = jueguito_vars->nodo_collider;
         while (nodo_temp!=NULL){
-            if(CheckCollisionRecs((Rectangle){nodo_temp->x-2,nodo_temp->y-2,4,4},
+            if(CheckCollisionRecs((Rectangle){nodo_temp->x-2 ,
+                                nodo_temp->y-2,
+                                4, 4},
                                 jueguito_vars->coll_cabeza)){
                 // operacion estados AND 1111 1110 es igual a estados ???? ???0
                 jueguito_vars->estados = jueguito_vars->estados & 254; 
@@ -193,10 +218,11 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     }
     
     // Dibujar comida
-    DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,8,BLACK);
+    DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,15,BLACK);
 
+    #ifdef DEBUG_SNAKE_
     // Para dibujar los colliders
-    /*DrawRectangleLinesEx(jueguito_vars->coll_cabeza,1,RED);
+    DrawRectangleLinesEx(jueguito_vars->coll_cabeza,1,RED);
     DrawRectangleLinesEx(jueguito_vars->coll_comida,1,RED);
     if(jueguito_vars->nodo_collider != NULL){
         nodo_temp = jueguito_vars->nodo_collider;
@@ -209,7 +235,8 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
         }
         
         
-    }*/
+    }
+    #endif //DEBUG_SNAKE_
 
     // Dibujar score
     DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,SKYBLUE);
