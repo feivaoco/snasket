@@ -1,8 +1,11 @@
 # SNASKET
 Titulo inspirado en "Caskets" del NehruvianDOOM
 
+![demostracion gif](demos_gif/gif_snasket_1698903799.gif)
 
+![demostracion gif](demos_gif/gif_snasket_1698888589.gif)
 
+![demostracion gif](demos_gif/gif_snasket_1698887930.gif)
 
 ##### raylib
 <https://github.com/raysan5/raylib>

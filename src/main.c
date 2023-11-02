@@ -12,7 +12,7 @@
 #include "snskt/pd_handler.h"
 
 //#define GRABAR_
-#ifdef GRABAR_ 
+#ifdef GRABAR_
 
 //#define MSF_GIF_IMPL
 #include <time.h>
