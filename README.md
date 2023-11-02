@@ -2,7 +2,11 @@
 Titulo inspirado en "Caskets" del NehruvianDOOM
 
 ![demostracion gif](demos_gif/gif_snasket_1698959066.gif)
-<video src="demos_gif/2023-11-02 14-17-00.mp4" controls title="demostracion video"></video>
+
+
+https://github.com/feivaoco/snasket/assets/52841258/d806c2d1-573e-4773-bbfb-7bfd2fd2197c
+
+
 
 
 
