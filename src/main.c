@@ -131,7 +131,7 @@ int main(void){
     MsfGifResult result = msf_gif_end(&gifState);
     if (result.data) {
         time_t now = time(NULL);
-        const char * gif_path =TextFormat("../demos_gif/gif_snasket_%d.gif", (u32)now);
+        const char * gif_path =TextFormat("gif_snasket_%d.gif", (u32)now);
         FILE * fp = fopen(gif_path, "wb");
         fwrite(result.data, result.dataSize, 1, fp);
         fclose(fp);
