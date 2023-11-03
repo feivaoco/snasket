@@ -57,14 +57,12 @@ int main(void){
         pa_callback,
         NULL
     );
+
     // init pd, match portaudio channels and samplerate
     libpd_set_printhook(pdprint);
     libpd_set_noteonhook(pdnoteon);
     libpd_init();
     libpd_init_audio(inputchan, outputchan, samplerate);
-
-     
-    
 
     // compute audio    [; pd dsp 1(
     libpd_start_message(1); // one entry in list
@@ -95,11 +93,8 @@ int main(void){
 
 
     // SETUP RAYLIB
-    
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
     SetWindowIcon(LoadImage("../resources/snasket.png"));
-    
-    
     SetTargetFPS(FLAG_VSYNC_HINT);
     /////////////////////////
 
