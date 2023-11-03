@@ -7,7 +7,7 @@
 // si se quiere debugear los colliders
 //#define DEBUG_SNAKE_
 // nodos a aniadir cuando se come
-#define na 2
+#define na 3
 // offset de coordenadas para el collider de la cabeza
 #define offset_coll_cabeza 3
 // size para el collider de la cabeza
@@ -17,7 +17,8 @@
 // size para el collider de la comida
 #define size_coll_comida offset_coll_comida*2
 
-
+// 
+#define ni_a 5
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
     // tamanio de la ventana
@@ -29,7 +30,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
     jueguito_vars->velocidad = 370;
     jueguito_vars->estados = 1;
-    jueguito_vars->nodos_aniadir = 2;
+    jueguito_vars->nodos_aniadir = na;
     jueguito_vars->nodos_cantidad = 0;
     jueguito_vars->nodo_collider = NULL;
     jueguito_vars->tiempo_aniadir_nodo = 0;
@@ -116,7 +117,10 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
 
     
     // Reiniciar el jueguito
-    if(IsKeyPressed(KEY_I)) setup_snake(snake_cabeza,jueguito_vars);
+    if(IsKeyPressed(KEY_I)){ 
+        setup_snake(snake_cabeza,jueguito_vars);
+        libpd_bang("bMorido");
+    }
     
     // Input switch
     switch (GetKeyPressed()){
@@ -179,7 +183,7 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
 
     while (nodo_temp->sig != NULL){
         jueguito_vars->nodos_cantidad += 1;
-        if(jueguito_vars->nodos_cantidad == 15)
+        if(jueguito_vars->nodos_cantidad == ni_a)
             jueguito_vars->nodo_collider = nodo_temp;
         nodo_temp = nodo_temp->sig;
         if(nodo_temp->sig != NULL){
@@ -226,6 +230,22 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
         jueguito_vars->coll_comida.y = jueguito_vars->comida_y - offset_coll_comida;
         jueguito_vars->nodos_aniadir += na;
         
+        nodo_temp = snake_cabeza;
+        while(nodo_temp != NULL){
+            if(CheckCollisionRecs((Rectangle){nodo_temp->x-2 ,
+                                nodo_temp->y-2,
+                                4, 4},
+                                jueguito_vars->coll_comida) ){
+                jueguito_vars->comida_x = GetRandomValue(0+10, jueguito_vars->sW - 10);
+                jueguito_vars->comida_y = GetRandomValue(0+10, jueguito_vars->sH - 10);
+                jueguito_vars->coll_comida.x = jueguito_vars->comida_x - offset_coll_comida;
+                jueguito_vars->coll_comida.y = jueguito_vars->comida_y - offset_coll_comida;        
+                nodo_temp = snake_cabeza;
+                continue;
+            }
+            nodo_temp = nodo_temp->sig;
+        }
+
     }
     
     // Checar si colisiona con su cola
