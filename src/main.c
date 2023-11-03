@@ -99,7 +99,8 @@ int main(void){
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
     SetWindowIcon(LoadImage("../resources/snasket.png"));
     
-    SetTargetFPS(100);
+    
+    SetTargetFPS(FLAG_VSYNC_HINT);
     /////////////////////////
 
     while (!WindowShouldClose()){
