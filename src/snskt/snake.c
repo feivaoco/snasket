@@ -27,7 +27,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     
-    jueguito_vars->velocidad = 280;
+    jueguito_vars->velocidad = 370;
     jueguito_vars->estados = 1;
     jueguito_vars->nodos_aniadir = 2;
     jueguito_vars->nodos_cantidad = 0;
