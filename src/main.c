@@ -93,9 +93,15 @@ int main(void){
     #endif //GRABAR_ 
     /////////////////////
 
-    InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
-    SetTargetFPS(60);
+
+    // SETUP RAYLIB
     
+    InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
+    SetWindowIcon(LoadImage("../resources/snasket.png"));
+    
+    SetTargetFPS(60);
+    /////////////////////////
+
     while (!WindowShouldClose()){
         // UPDATE SNAKE
         update_snake(snake_p, jueguito_vars);

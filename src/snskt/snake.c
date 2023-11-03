@@ -26,7 +26,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
-    jueguito_vars->dir = 0;
+    
     jueguito_vars->velocidad = 280;
     jueguito_vars->estados = 1;
     jueguito_vars->nodos_aniadir = 2;
@@ -38,9 +38,27 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     jueguito_vars->comida_x = GetRandomValue(0+10, jueguito_vars->sW - 10);
     jueguito_vars->comida_y = GetRandomValue(0+10, jueguito_vars->sH - 10);
 
-    // inicializacion de la posicion de la serpiente y poner null en su sig
-    snake_cabeza->x = (f32)jueguito_vars->sW/4;
-    snake_cabeza->y = (f32)jueguito_vars->sH/4;
+    // inicializacion de la posicion de la serpiente
+    jueguito_vars->dir =GetRandomValue(0,3);
+    switch (jueguito_vars->dir){
+        case 0:
+            snake_cabeza->x = (f32)jueguito_vars->sW-size_coll_cabeza-150;
+            snake_cabeza->y = (f32)jueguito_vars->sH/2;
+            break;
+        case 1:
+            snake_cabeza->x = size_coll_cabeza+150;
+            snake_cabeza->y = (f32)jueguito_vars->sH/2;
+            break;
+        case 2:
+            snake_cabeza->x = (f32)jueguito_vars->sW/2;
+            snake_cabeza->y = size_coll_cabeza+150;
+            break;
+        case 3:
+            snake_cabeza->x = (f32)jueguito_vars->sW/2;
+            snake_cabeza->y = (f32)jueguito_vars->sH-size_coll_cabeza-150;
+            break;
+    }
+    
     
     // inicializacion de los recs colliders
     jueguito_vars->coll_cabeza = (Rectangle){snake_cabeza->x-offset_coll_cabeza,
@@ -175,7 +193,7 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // Bloque de codigo para aniadir un nodo a la cola
     if(jueguito_vars->nodos_aniadir > 0){
         jueguito_vars->tiempo_aniadir_nodo += 1 * GetFrameTime();
-        if(jueguito_vars->tiempo_aniadir_nodo > .3){
+        if(jueguito_vars->tiempo_aniadir_nodo > .25){
             // Le manda al archivo del puredata abierto un bang como [s bNodo] entonces
             // un [r bNodo] recibira el bang mandando en esta funcion
             libpd_bang("bNodo");
@@ -186,8 +204,7 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
             jueguito_vars->nodos_aniadir -= 1;
             if(jueguito_vars->nodos_aniadir < 0) jueguito_vars->nodos_aniadir = 0;
             jueguito_vars->tiempo_aniadir_nodo = 0;
-        }
-            
+        }     
     }
 
     jueguito_vars->coll_cabeza.x = snake_cabeza->x-offset_coll_cabeza;
