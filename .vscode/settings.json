@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "stdio.h": "c",
-        "raylib.h": "c",
-        "msf_gif.h": "c",
-        "z_libpd.h": "c",
-        "time.h": "c"
-    }
-}
