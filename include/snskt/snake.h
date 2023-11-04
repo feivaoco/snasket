@@ -51,6 +51,9 @@ typedef struct jueguito_t{
     // tiempo de espera para aniadir un nodo
     f32 tiempo_aniadir_nodo;
 
+    // score del jueguito
+    u64 puntuacion;
+    
 }jueguito_t;
 
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars);

@@ -115,11 +115,11 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
         snake_cabeza->sig->y = snake_cabeza->last_y;
     }
 
-    
     // Reiniciar el jueguito
     if(IsKeyPressed(KEY_I)){ 
-        setup_snake(snake_cabeza,jueguito_vars);
         libpd_bang("bMorido");
+        jueguito_vars->puntuacion = jueguito_vars->nodos_cantidad;
+        setup_snake(snake_cabeza,jueguito_vars);
     }
     
     // Input switch
@@ -214,8 +214,6 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     jueguito_vars->coll_cabeza.x = snake_cabeza->x-offset_coll_cabeza;
     jueguito_vars->coll_cabeza.y = snake_cabeza->y-offset_coll_cabeza;
 
-    
-
     //Checar si colisionan los rectangulos de la cabeza y la comida
     if(CheckCollisionRecs(jueguito_vars->coll_cabeza,
                           jueguito_vars->coll_comida  )){
@@ -245,7 +243,6 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
             }
             nodo_temp = nodo_temp->sig;
         }
-
     }
     
     // Checar si colisiona con su cola
@@ -262,14 +259,14 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
                 // Le manda al archivo del puredata abierto un bang como [s bMorido] entonces
                 // un [r bMorido] recibira el bang mandando en esta funcion
                 libpd_bang("bMorido");
+                
+                jueguito_vars->puntuacion = jueguito_vars->nodos_cantidad;
 
                 break;
             }
             nodo_temp = nodo_temp->sig;
         }
     }
-   
-    
 }
 
 
@@ -307,7 +304,7 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,DARKBLUE);
     //DrawText(TextFormat("%i",jueguito_vars->estados), jueguito_vars->sW-20, jueguito_vars->sH-50,50,RED);
     
-    
+
 }
 
 
