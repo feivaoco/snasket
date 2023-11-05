@@ -21,16 +21,16 @@ typedef struct jueguito_t{
     // direccion para comparar
     u8 dir;
     u8 dir_anterior;
-    // 1 bit 0 - sigue vivo ? 
-    // lo siguiente abajo sigue en proceso de definicion
-    // 2 bit 1 - comio la bola ?
-    // 4 bit 2 - si siguiente
-    // 8 bit 3 - 
+    // 1  bit 0 - en menu inicio
+    // 2  bit 1 - en jueguito snake
+    // 4  bit 2 - en menu pausa
+    // 8  bit 3 - en menu terminado
     u8 estados;
     // velocidad del snake
     f32 velocidad;   
-    // tamaño de ventana
+    // tamaño de ventana en anchura
     s32 sW;
+    // tamaño de ventana en altura
     s32 sH;
 
     // comida coordenadas
@@ -52,10 +52,20 @@ typedef struct jueguito_t{
     f32 tiempo_aniadir_nodo;
 
     // score del jueguito
-    u64 puntuacion;
+    //u32 puntuacion;
     
+    // estados del menu inicio para el highlight de opciones
+    u8 estados_menu_inicio;
+    // estados del menu pausa para el highlight de opciones
+    u8 estados_menu_pausa;
+    // estados del menu pausa para el highlight de opciones
+    u8 estados_menu_terminado;
+
+    // estado sonido del menu
+    u8 estado_sonido_opcion;
 }jueguito_t;
 
+void jugando_snake(nodoSnake_t *snake_cabeza, jueguito_t *jueguito_vars);
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars);
 void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars);
 void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars);

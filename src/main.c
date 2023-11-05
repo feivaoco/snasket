@@ -11,14 +11,14 @@
 #define PD_HANDLER_IMPL
 #include "snskt/pd_handler.h"
 
+#include "snskt/menu.h"
+
 //#define GRABAR_
 #ifdef GRABAR_
-
 //#define MSF_GIF_IMPL
 #include <time.h>
 #define TIEMPO_LAPSO_GIF .1
 #include "msf_gif.h"
-
 #endif //GRABAR_ 
 
 
@@ -31,7 +31,7 @@ int main(void){
     int inputchan = pa_get_inputs(inputdev);
     int outputchan = pa_get_outputs(outputdev);
     int samplerate = 44100;
-    int buffersize = 1024;
+    int buffersize = 2048;
     PaStream *stream = NULL;
     PaStreamParameters inputParams = {
         .device = (PaDeviceIndex)inputdev,
@@ -63,7 +63,7 @@ int main(void){
     libpd_set_noteonhook(pdnoteon);
     libpd_init();
     libpd_init_audio(inputchan, outputchan, samplerate);
-
+    
     // compute audio    [; pd dsp 1(
     libpd_start_message(1); // one entry in list
     libpd_add_float(1.0f);
@@ -75,13 +75,24 @@ int main(void){
 
     ///////////////
 
-    // SETUP SNAKE
+
+    // SETUP VARIABLES DEL JUEGUITO
     nodoSnake_t* snake_p = MemAlloc(sizeof(nodoSnake_t));
-    jueguito_t* jueguito_vars = MemAlloc(sizeof(jueguito_t));
     snake_p->sig = NULL;
-    setup_snake(snake_p, jueguito_vars);
-    /////////////
+
+    jueguito_t* jueguito_vars = MemAlloc(sizeof(jueguito_t));
+    jueguito_vars->sH = 700;
+    jueguito_vars->sW = 900;
+
+    jueguito_vars->estados = EnMenuInicio;
+
     
+    //////////////
+    
+
+    
+
+
     // SETUP GIF RECORDER
     #ifdef GRABAR_ 
     f32 segundoFrame = 0;
@@ -98,24 +109,65 @@ int main(void){
     SetTargetFPS(FLAG_VSYNC_HINT);
     /////////////////////////
 
+    //Bucle principal
     while (!WindowShouldClose()){
+        // SWITCH PARA UPDATE
+        switch (jueguito_vars->estados){
+            case EnMenuInicio:
+                update_menu_inicio(snake_p, jueguito_vars);
+                break;
+            case EnJueguito:
+                update_snake(snake_p,jueguito_vars);
+                break;
+            case EnMenuPausa:
+                update_menu_pausa(snake_p, jueguito_vars);
+                break;
+            case EnMenuTerminado:
+                update_menu_terminar(snake_p, jueguito_vars);
+                break;
+        }
+        
+        
+        BeginDrawing();
+        
+        
+        // SWITCH PARA DRAW
+        switch (jueguito_vars->estados){
+            case EnMenuInicio:
+                draw_menu_inicio(jueguito_vars);
+                break;
+            case EnJueguito:
+                draw_snake(snake_p,jueguito_vars);
+                break;
+            case EnMenuPausa:
+                draw_menu_pausa(snake_p,jueguito_vars);
+                break;
+            case EnMenuTerminado:
+                draw_menu_terminar(snake_p, jueguito_vars);
+                break;
+        }
+
+
+
+
+        //DrawFPS(5, 5);   
+        
+        EndDrawing();
+        /*
         // UPDATE SNAKE
         update_snake(snake_p, jueguito_vars);
         /////////////
-
-
         //¬ BLOQUE DE DIBUJO
         BeginDrawing();
-        ClearBackground(LIGHTGRAY);
-
+        
         // DRAW SNAKE
         draw_snake(snake_p, jueguito_vars);
         /////////////
-
         DrawFPS(5, 5);        
         EndDrawing();
         //¬/////////////////
-        
+        */
+
         #ifdef GRABAR_ 
         segundoFrame += GetFrameTime();
         if(segundoFrame > TIEMPO_LAPSO_GIF){

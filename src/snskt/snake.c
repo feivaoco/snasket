@@ -4,6 +4,7 @@
 #include "ray/raylib.h"
 #include "stdio.h"
 #include "pd/z_libpd.h"
+#include "snskt/menu.h"
 // si se quiere debugear los colliders
 //#define DEBUG_SNAKE_
 // nodos a aniadir cuando se come
@@ -16,20 +17,21 @@
 #define offset_coll_comida 23
 // size para el collider de la comida
 #define size_coll_comida offset_coll_comida*2
-
-// 
+// nodo en el que se inicia a aniadir 
 #define ni_a 5
+
+
+
+
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
-    // tamanio de la ventana
-    jueguito_vars->sH = 700;
-    jueguito_vars->sW = 800;
+    
     
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     
     jueguito_vars->velocidad = 370;
-    jueguito_vars->estados = 1;
+   
     jueguito_vars->nodos_aniadir = na;
     jueguito_vars->nodos_cantidad = 0;
     jueguito_vars->nodo_collider = NULL;
@@ -93,13 +95,19 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
 }
 
 void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
+
+    if(IsKeyPressed(KEY_P)){
+        jueguito_vars->estados = EnMenuPausa;
+        return;
+    }
+
     // Delta time para multiplicar y tener velocidad constante
     f32 delta_time = GetFrameTime();
 
     // Checar si ya perdio
-    if(!(jueguito_vars->estados & 1)){
+    /*if(!(jueguito_vars->estados & 2)){
         setup_snake(snake_cabeza,jueguito_vars);
-    }
+    }*/
 
     // esto para comparar si se cambio de direccion para saber si poner un nodo mas en los nodos colliders
     jueguito_vars->dir_anterior = jueguito_vars->dir;
@@ -116,33 +124,33 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     }
 
     // Reiniciar el jueguito
-    if(IsKeyPressed(KEY_I)){ 
+    /*if(IsKeyPressed(KEY_I)){ 
         libpd_bang("bMorido");
         jueguito_vars->puntuacion = jueguito_vars->nodos_cantidad;
         setup_snake(snake_cabeza,jueguito_vars);
-    }
+    }*/
     
     // Input switch
     switch (GetKeyPressed()){
         case KEY_D:
         case KEY_RIGHT:
             jueguito_vars->dir = jueguito_vars->dir == 1 ? 1:0;
-            libpd_bang("bBD");
+            //libpd_bang("bBD");
             break;
         case KEY_A:
         case KEY_LEFT:
             jueguito_vars->dir = jueguito_vars->dir == 0 ? 0:1;
-            libpd_bang("bSn");
+            //libpd_bang("bSn");
             break;
         case KEY_W:
         case KEY_UP:
             jueguito_vars->dir = jueguito_vars->dir == 3 ? 3:2;
-            libpd_bang("bHH");
+            //libpd_bang("bHH");
             break;
         case KEY_S:
         case KEY_DOWN:
             jueguito_vars->dir = jueguito_vars->dir == 2 ? 2:3;
-            libpd_bang("bCB");
+            //libpd_bang("bCB");
             break;
         default:
             break;
@@ -176,8 +184,7 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     
     if(snake_cabeza->x > jueguito_vars->sW + 5) snake_cabeza->x = 0;
     if(snake_cabeza->x < - 5) snake_cabeza->x = jueguito_vars->sW;
-    
-    //jueguito_vars->estados = jueguito_vars->estados & 251;
+   
     nodoSnake_t *nodo_temp = snake_cabeza;
     jueguito_vars->nodos_cantidad = 0;
 
@@ -253,16 +260,17 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
                                 nodo_temp->y-2,
                                 4, 4},
                                 jueguito_vars->coll_cabeza)){
-                // operacion estados AND 1111 1110 es igual a estados ???? ???0
-                jueguito_vars->estados = jueguito_vars->estados & 254; 
+                
+                
 
                 // Le manda al archivo del puredata abierto un bang como [s bMorido] entonces
                 // un [r bMorido] recibira el bang mandando en esta funcion
                 libpd_bang("bMorido");
                 
-                jueguito_vars->puntuacion = jueguito_vars->nodos_cantidad;
-
-                break;
+                
+                
+                jueguito_vars->estados = EnMenuTerminado; 
+                return;
             }
             nodo_temp = nodo_temp->sig;
         }
@@ -271,6 +279,10 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
 
 
 void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
+    // LIMPIAR PANTALLA
+    ClearBackground(LIGHTGRAY);
+
+
     // Dibujar serpiente
     nodoSnake_t *nodo_temp = snake_cabeza->sig;
     while(nodo_temp != NULL){
@@ -301,11 +313,15 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     #endif //DEBUG_SNAKE_
 
     // Dibujar score
+    DrawText("SCORE", 20, jueguito_vars->sH-100,50,DARKBLUE);
     DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,DARKBLUE);
     //DrawText(TextFormat("%i",jueguito_vars->estados), jueguito_vars->sW-20, jueguito_vars->sH-50,50,RED);
     
 
 }
+
+
+
 
 
 
