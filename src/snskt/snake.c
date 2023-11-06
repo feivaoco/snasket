@@ -375,6 +375,10 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // LIMPIAR PANTALLA
     ClearBackground(paletas[jueguito_vars->index_paleta][4]);
 
+    // Dibujar score
+    DrawText("SCORE", 20, jueguito_vars->sH-100,50,paletas[jueguito_vars->index_paleta][2]);
+    DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,paletas[jueguito_vars->index_paleta][2]);
+    
 
     // Dibujar serpiente
     nodoSnake_t *nodo_temp = snake_cabeza->sig;
@@ -405,12 +409,8 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     }
     #endif //DEBUG_SNAKE_
 
-    // Dibujar score
-    DrawText("SCORE", 20, jueguito_vars->sH-100,50,paletas[jueguito_vars->index_paleta][2]);
-    DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,paletas[jueguito_vars->index_paleta][2]);
-    //DrawText(TextFormat("%i",jueguito_vars->estados), jueguito_vars->sW-20, jueguito_vars->sH-50,50,RED);
     
-
+    
 }
 
 

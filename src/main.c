@@ -74,7 +74,7 @@ int main(void){
     Pa_StartStream(stream);
 
     ///////////////
-
+    
 
     // SETUP VARIABLES DEL JUEGUITO
     nodoSnake_t* snake_p = MemAlloc(sizeof(nodoSnake_t));
@@ -86,8 +86,8 @@ int main(void){
     jueguito_vars->index_paleta =0;
     jueguito_vars->estados = EnMenuInicio;
 
-    
-    
+    jueguito_vars->volumen = 10;
+    libpd_float("fVol",(f32)jueguito_vars->volumen/100);
    
     
     //////////////

@@ -73,7 +73,8 @@ typedef struct jueguito_t{
     // indice de la paleta de colores
     s8 index_paleta;
 
-    
+    // volumen del jueguito
+    s8 volumen;
 
 }jueguito_t;
 
