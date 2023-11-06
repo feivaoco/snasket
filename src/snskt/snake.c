@@ -21,7 +21,89 @@
 #define ni_a 5
 
 
+Color paletas[paletas_cantidad][6] = {
+    {   
+        BLACK,      SKYBLUE,
+        BLUE,       LIME,
+        LIGHTGRAY,  WHITE
+    },
+    {
+        {0x00, 0x17, 0x7c, 0xFF},
+        {0x84, 0x39, 0x6c, 0xFF},
+        {0x59, 0x83, 0x44, 0xFF},
+        {0xd0, 0x90, 0x71, 0xFF},
+        {0xea, 0xce, 0x75, 0xFF},
+        {0xf7, 0xff, 0xed, 0xFF},
+    },
+    {
 
+        {0xf6, 0x24, 0x0f, 0xFF},
+        {0x1d, 0xf6, 0x0f, 0xFF},
+        {0x27, 0x70, 0xf6, 0xFF},
+        {0xf2, 0xf6, 0x0f, 0xFF},
+        {0xf6, 0x89, 0x0f, 0xFF},
+        {0xff, 0xff, 0xff, 0xFF},
+        
+    },
+    {
+        {0x26, 0x1f, 0x1f, 0xff},
+        {0xc0, 0xaa, 0x74, 0xff},
+        {0xf1, 0xf1, 0xd1, 0xff},
+        {0x31, 0x98, 0x35, 0xff},
+        {0x0f, 0x4d, 0x32, 0xff},
+        {0xff, 0x2d, 0x2d, 0xff},
+        
+    },
+    {
+        {0x32, 0x41, 0xe0, 0xFF},
+        {0xa4, 0xef, 0x00, 0xFF},
+        {0xff, 0xff, 0x00, 0xFF},
+        {0xff, 0x52, 0xd2, 0xFF},
+        {0x00, 0x00, 0x00, 0xFF},
+        {0xff, 0xff, 0xff, 0xFF},
+
+    },
+    {
+        {0xf4,0xc4,0xd4,0xFF},
+        {0xea,0x92,0xab,0xFF},
+        {0xaf,0x7f,0xc2,0xFF},
+        {0x90,0x85,0xd0,0xFF},
+        {0x8c,0x76,0xbe,0xFF},
+        {0x61,0x56,0x7d,0xFF},
+    },
+    {
+        {0x0a,0x0d,0x22,0xFF},
+        {0x29,0x6b,0xaa,0xFF},
+        {0x03,0xa6,0x6b,0xFF},
+        {0xfc,0xff,0xff,0xFF},
+        {0xf3,0xac,0x00,0xFF},
+        {0xc8,0x19,0x22,0xFF},
+    },
+    {
+        {0xe5,0xe2,0xd3,0xFF},
+        {0xad,0xa3,0x94,0xFF},
+        {0x2f,0x27,0x36,0xFF},
+        {0x54,0x5a,0xfb,0xFF},
+        {0x94,0xda,0xfc,0xFF},
+        {0xc2,0x2d,0x41,0xFF},
+    },
+    {
+        {0x25,0x1d,0x29,0xFF},
+        {0x43,0x3d,0x4c,0xFF},
+        {0x77,0x82,0x99,0xFF},
+        {0x9c,0xae,0xbb,0xFF},
+        {0xfb,0xcd,0xcd,0xFF},
+        {0xff,0xff,0xff,0xFF},
+    },
+    {
+        {0x46,0x42,0x5e,0xFF},
+        {0x15,0x78,0x8c,0xFF},
+        {0x00,0xb9,0xbe,0xFF},
+        {0xff,0xee,0xcc,0xFF},
+        {0xff,0xb0,0xa3,0xFF},
+        {0xff,0x69,0x73,0xFF},
+    },
+};
 
 void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     
@@ -30,7 +112,7 @@ void setup_snake(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     // inicializacion de las variables del jueguito
     jueguito_vars->dir_anterior = 0;
     
-    jueguito_vars->velocidad = 370;
+    jueguito_vars->velocidad = 380;
    
     jueguito_vars->nodos_aniadir = na;
     jueguito_vars->nodos_cantidad = 0;
@@ -152,10 +234,21 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
             jueguito_vars->dir = jueguito_vars->dir == 2 ? 2:3;
             //libpd_bang("bCB");
             break;
-        default:
+        
+        // CAMBIAR LA PALETA DE COLORES
+        case KEY_F1:
+            jueguito_vars->index_paleta += 1;
+            if(jueguito_vars->index_paleta >= paletas_cantidad)
+                jueguito_vars->index_paleta = 0;
+            break;
+        case KEY_F2:
+            jueguito_vars->index_paleta -= 1;
+            if(jueguito_vars->index_paleta < 0)
+                jueguito_vars->index_paleta = paletas_cantidad - 1;
+            break;default:
             break;
     }
-    
+   
     /*
     if(IsKeyPressed(KEY_D)||IsKeyPressed(KEY_RIGHT)) jueguito_vars->dir = jueguito_vars->dir == 1 ? 1:0;
     if(IsKeyPressed(KEY_A)||IsKeyPressed(KEY_LEFT)) jueguito_vars->dir = jueguito_vars->dir == 0 ? 0:1;
@@ -280,19 +373,19 @@ void update_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
 
 void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     // LIMPIAR PANTALLA
-    ClearBackground(LIGHTGRAY);
+    ClearBackground(paletas[jueguito_vars->index_paleta][4]);
 
 
     // Dibujar serpiente
     nodoSnake_t *nodo_temp = snake_cabeza->sig;
     while(nodo_temp != NULL){
-        DrawCircle(nodo_temp->x,nodo_temp->y,10,BLUE);
+        DrawCircle(nodo_temp->x,nodo_temp->y,10,paletas[jueguito_vars->index_paleta][1]);
         nodo_temp = nodo_temp->sig;
     }
-    DrawCircle(snake_cabeza->x,snake_cabeza->y,10,(Color){ 0, 85, 165, 255 });
+    DrawCircle(snake_cabeza->x,snake_cabeza->y,10,paletas[jueguito_vars->index_paleta][2]);
 
     // Dibujar comida
-    DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,15,LIME);
+    DrawCircle(jueguito_vars->comida_x,jueguito_vars->comida_y,15,paletas[jueguito_vars->index_paleta][3]);
 
     #ifdef DEBUG_SNAKE_
     // Para dibujar los colliders
@@ -313,8 +406,8 @@ void draw_snake(nodoSnake_t *snake_cabeza,jueguito_t * jueguito_vars){
     #endif //DEBUG_SNAKE_
 
     // Dibujar score
-    DrawText("SCORE", 20, jueguito_vars->sH-100,50,DARKBLUE);
-    DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,DARKBLUE);
+    DrawText("SCORE", 20, jueguito_vars->sH-100,50,paletas[jueguito_vars->index_paleta][2]);
+    DrawText(TextFormat("%i",jueguito_vars->nodos_cantidad), 20, jueguito_vars->sH-50,50,paletas[jueguito_vars->index_paleta][2]);
     //DrawText(TextFormat("%i",jueguito_vars->estados), jueguito_vars->sW-20, jueguito_vars->sH-50,50,RED);
     
 

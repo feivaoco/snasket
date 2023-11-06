@@ -5,6 +5,11 @@
 #include "ray/raylib.h"
 #include "defs.h"
 
+#define paletas_cantidad 10
+
+// paletas de colores del jueguito
+extern Color paletas[paletas_cantidad][6];
+
 // Estructura para los nodos usados en el snake
 typedef struct nodoSnake_t{
     struct nodoSnake_t *sig;
@@ -63,6 +68,13 @@ typedef struct jueguito_t{
 
     // estado sonido del menu
     u8 estado_sonido_opcion;
+
+
+    // indice de la paleta de colores
+    s8 index_paleta;
+
+    
+
 }jueguito_t;
 
 void jugando_snake(nodoSnake_t *snake_cabeza, jueguito_t *jueguito_vars);

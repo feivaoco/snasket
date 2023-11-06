@@ -6,6 +6,20 @@
 
 
 void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
+    // CAMBIAR LA PALETA DE COLORES
+    switch(GetKeyPressed()){
+        case KEY_F1:
+            jueguito_vars->index_paleta += 1;
+            if(jueguito_vars->index_paleta >= paletas_cantidad)
+                jueguito_vars->index_paleta = 0;
+            break;
+        case KEY_F2:
+            jueguito_vars->index_paleta -= 1;
+            if(jueguito_vars->index_paleta < 0)
+                jueguito_vars->index_paleta = paletas_cantidad - 1;
+            break;
+    }
+
     jueguito_vars->estados_menu_inicio = 0;
     Vector2 mv = GetMousePosition();
     Rectangle mr = (Rectangle){mv.x-5,mv.y-4,14,18};
@@ -37,19 +51,34 @@ void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
 }
 
 void draw_menu_inicio(jueguito_t *jv){
-    ClearBackground(BLUE);
+    ClearBackground(paletas[jv->index_paleta][1]);
+    DrawText("SNASKET",70, 80, 160, paletas[jv->index_paleta][2]);
     switch(jv->estados_menu_inicio){
         case 0:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,BLACK);
+            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
             break;
         case 1:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,WHITE);
+            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][5]);
+            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][4]);
             break;
     }
 }
 
 void update_menu_pausa(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
-    
+    // CAMBIAR LA PALETA DE COLORES
+    switch(GetKeyPressed()){
+        case KEY_F1:
+            jueguito_vars->index_paleta += 1;
+            if(jueguito_vars->index_paleta >= paletas_cantidad)
+                jueguito_vars->index_paleta = 0;
+            break;
+        case KEY_F2:
+            jueguito_vars->index_paleta -= 1;
+            if(jueguito_vars->index_paleta < 0)
+                jueguito_vars->index_paleta = paletas_cantidad - 1;
+            break;
+    }
     /*switch(GetKeyPressed()){
         case KEY_I:
             jueguito_vars->estados = EnJueguito;
@@ -140,27 +169,39 @@ void draw_menu_pausa(nodoSnake_t* s,jueguito_t *jueguito_vars){
 
     switch(jueguito_vars->estados_menu_pausa){
         case 0:
-            DrawRectangle(xR/2, yU+40, xR/2,yD/4,BLACK);
-            DrawRectangle(xL+80, yD-80, xR/4,yD/4,BLACK);
-            DrawRectangle(xR-80, yD-80, xR/4,yD/4,BLACK);
+            DrawRectangle(xR/2, yU+40, xR/2,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("RESUME",xR/2+25, yU+70, 60, paletas[jueguito_vars->index_paleta][5]);            
+            DrawRectangle(xL+80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("RESTART",xL+93, yD-35, 26, paletas[jueguito_vars->index_paleta][5]); 
+            DrawRectangle(xR-80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("FINISH",xR-50, yD-35, 26, paletas[jueguito_vars->index_paleta][5]); 
             break;
 
         case 1:
-            DrawRectangle(xR/2, yU+40, xR/2,yD/4,WHITE);
-            DrawRectangle(xL+80, yD-80, xR/4,yD/4,BLACK);
-            DrawRectangle(xR-80, yD-80, xR/4,yD/4,BLACK);
+            DrawRectangle(xR/2, yU+40, xR/2,yD/4,paletas[jueguito_vars->index_paleta][5]);
+            DrawText("RESUME",xR/2+25, yU+70, 60, paletas[jueguito_vars->index_paleta][4]);   
+            DrawRectangle(xL+80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("RESTART",xL+93, yD-35, 26, paletas[jueguito_vars->index_paleta][5]); 
+            DrawRectangle(xR-80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("FINISH",xR-50, yD-35, 26, paletas[jueguito_vars->index_paleta][5]); 
             break;
         
         case 2:
-            DrawRectangle(xR/2, yU+40, xR/2,yD/4,BLACK);
-            DrawRectangle(xL+80, yD-80, xR/4,yD/4,WHITE);
-            DrawRectangle(xR-80, yD-80, xR/4,yD/4,BLACK);
+            DrawRectangle(xR/2, yU+40, xR/2,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("RESUME",xR/2+25, yU+70, 60, paletas[jueguito_vars->index_paleta][5]);   
+            DrawRectangle(xL+80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][5]);
+            DrawText("RESTART",xL+93, yD-35, 26, paletas[jueguito_vars->index_paleta][4]); 
+            DrawRectangle(xR-80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("FINISH",xR-50, yD-35, 26, paletas[jueguito_vars->index_paleta][5]); 
             break;
         
         case 3:
-            DrawRectangle(xR/2, yU+40, xR/2,yD/4,BLACK);
-            DrawRectangle(xL+80, yD-80, xR/4,yD/4,BLACK);
-            DrawRectangle(xR-80, yD-80, xR/4,yD/4,WHITE);
+            DrawRectangle(xR/2, yU+40, xR/2,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("RESUME",xR/2+25, yU+70, 60, paletas[jueguito_vars->index_paleta][5]);   
+            DrawRectangle(xL+80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][0]);
+            DrawText("RESTART",xL+93, yD-35, 26, paletas[jueguito_vars->index_paleta][5]); 
+            DrawRectangle(xR-80, yD-80, xR/4,yD/4,paletas[jueguito_vars->index_paleta][5]);
+            DrawText("FINISH",xR-50, yD-35, 26, paletas[jueguito_vars->index_paleta][4]); 
             break;
     }
         
@@ -170,10 +211,27 @@ void draw_menu_pausa(nodoSnake_t* s,jueguito_t *jueguito_vars){
 
 
 void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
+    // CAMBIAR LA PALETA DE COLORES
+    switch(GetKeyPressed()){
+        case KEY_F1:
+            jv->index_paleta += 1;
+            if(jv->index_paleta >= paletas_cantidad)
+                jv->index_paleta = 0;
+            break;
+        case KEY_F2:
+            jv->index_paleta -= 1;
+            if(jv->index_paleta < 0)
+                jv->index_paleta = paletas_cantidad - 1;
+            break;
+    }
+
+
+
     jv->estados_menu_terminado = 0;
 
     Vector2 mv = GetMousePosition();
     Rectangle mr = (Rectangle){mv.x-5,mv.y-4,14,18};
+    #ifdef BD_DISPONIBLE
     if(CheckCollisionRecs(mr,(Rectangle){jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60})){
         if(!(jv->estado_sonido_opcion & 1)){
             libpd_bang("bHover");
@@ -181,6 +239,7 @@ void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
         }
         jv->estados_menu_terminado = 1;
     }else{jv->estado_sonido_opcion = jv->estado_sonido_opcion & 254;}
+    #endif //BD_DISPONIBLE
 
     if(CheckCollisionRecs(mr,(Rectangle){jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80})){
         if(!(jv->estado_sonido_opcion & 2)){
@@ -190,6 +249,7 @@ void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
         jv->estados_menu_terminado = 2;
     }else{jv->estado_sonido_opcion = jv->estado_sonido_opcion & 253;}
 
+    
     if(CheckCollisionRecs(mr,(Rectangle){jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80})){
         if(!(jv->estado_sonido_opcion & 4)){
             libpd_bang("bHover");
@@ -202,9 +262,13 @@ void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
         case 0:
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
             break;
+        
+        #ifdef BD_DISPONIBLE
         case 1:
-            
+            // Caso en la conexion de datos para cargar puntaje a la base de datos    
             break;
+        #endif //BD_DISPONIBLE
+
         case 2:
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
@@ -229,30 +293,46 @@ void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
 
 
 void draw_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
-    ClearBackground(LIGHTGRAY);
+    ClearBackground(paletas[jv->index_paleta][4]);
     const char *p=TextFormat("%d", jv->nodos_cantidad);
     const char* scoreText = TextFormat("SCORE: %s", p);
-    DrawText(scoreText,jv->sW/2 - 260,jv->sH/4 ,86,BLUE);
+    DrawText(scoreText,jv->sW/2 - 260,jv->sH/4 ,86,paletas[jv->index_paleta][2]);
     switch(jv->estados_menu_terminado){
         case 0:
+            #ifdef BD_DISPONIBLE
             DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,BLACK);
-            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,BLACK);
-            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,BLACK);
+            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
+            DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][5]);   
+            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
+            DrawText("MENU",jv->sW/2+130, jv->sH/2+120, 40, paletas[jv->index_paleta][5]); 
             break;
         case 1:
+            #ifdef BD_DISPONIBLE
             DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,WHITE);
-            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,BLACK);
-            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,BLACK);
+            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
+            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
             break;
         case 2:
+            #ifdef BD_DISPONIBLE
             DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,BLACK);
-            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,WHITE);
-            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,BLACK);
+            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][5]);
+            DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][4]);  
+            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
+            DrawText("MENU",jv->sW/2+130, jv->sH/2+120, 40, paletas[jv->index_paleta][5]); 
+
             break;
         case 3:
+            #ifdef BD_DISPONIBLE
             DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,BLACK);
-            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,BLACK);
-            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,WHITE);
+            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
+            DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][5]); 
+            DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][5]);
+            DrawText("MENU",jv->sW/2+130, jv->sH/2+120, 40, paletas[jv->index_paleta][4]); 
+
             break;
     }
 

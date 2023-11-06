@@ -83,9 +83,12 @@ int main(void){
     jueguito_t* jueguito_vars = MemAlloc(sizeof(jueguito_t));
     jueguito_vars->sH = 700;
     jueguito_vars->sW = 900;
-
+    jueguito_vars->index_paleta =0;
     jueguito_vars->estados = EnMenuInicio;
 
+    
+    
+   
     
     //////////////
     
@@ -107,10 +110,13 @@ int main(void){
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
     SetWindowIcon(LoadImage("../resources/snasket.png"));
     SetTargetFPS(FLAG_VSYNC_HINT);
+    SetExitKey(KEY_NULL);
     /////////////////////////
 
     //Bucle principal
     while (!WindowShouldClose()){
+        
+
         // SWITCH PARA UPDATE
         switch (jueguito_vars->estados){
             case EnMenuInicio:

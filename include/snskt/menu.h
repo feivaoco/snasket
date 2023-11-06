@@ -6,6 +6,8 @@
 #include "defs.h"
 
 
+
+
 // Enum de los estados del jueguito
 enum ESTADOS_JUEGUITO{
     // Estado en el que inicia la aplicacion
