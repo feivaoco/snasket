@@ -24,13 +24,23 @@ void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     Vector2 mv = GetMousePosition();
     Rectangle mr = (Rectangle){mv.x-5,mv.y-4,14,18};
     if(CheckCollisionRecs(mr,(Rectangle){jueguito_vars->sW/4, jueguito_vars->sH/2-120, jueguito_vars->sW/2,120})){
-        if(!jueguito_vars->estado_sonido_opcion){
+        if(!(jueguito_vars->estado_sonido_opcion & 1)){
             libpd_bang("bHover");
-            jueguito_vars->estado_sonido_opcion = 1;
+            jueguito_vars->estado_sonido_opcion += 1;
         }
         jueguito_vars->estados_menu_inicio = 1;
 
-    }else{jueguito_vars->estado_sonido_opcion = 0;}
+    }else{jueguito_vars->estado_sonido_opcion = jueguito_vars->estado_sonido_opcion  & 254;}
+
+
+    if(CheckCollisionRecs(mr,(Rectangle){jueguito_vars->sW/4-80, jueguito_vars->sH/2+100, jueguito_vars->sW/2-240,80})){
+        if(!(jueguito_vars->estado_sonido_opcion & 2)){
+            libpd_bang("bHover");
+            jueguito_vars->estado_sonido_opcion += 2;
+        }
+        jueguito_vars->estados_menu_inicio = 2;
+    }else{jueguito_vars->estado_sonido_opcion = jueguito_vars->estado_sonido_opcion & 253;}
+
 
     switch(jueguito_vars->estados_menu_inicio){
         case 0:
@@ -46,6 +56,12 @@ void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
                 return;
             }
             break;
+        case 2:
+            SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+            if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                libpd_bang("bSoundT");
+            }
+            break;
     }
     
 }
@@ -57,11 +73,20 @@ void draw_menu_inicio(jueguito_t *jv){
         case 0:
             DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
             DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
+            DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]); 
             break;
         case 1:
             DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][5]);
             DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][4]);
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
+            DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]); 
             break;
+        case 2:
+            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][5]);
+            DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][4]); 
     }
 }
 
