@@ -3,8 +3,6 @@ Titulo inspirado en "Caskets" del NehruvianDOOM
 
 
 ![gif_snasket_1699308142](https://github.com/feivaoco/assets_repositorios/assets/52841258/fc949eb9-1656-4ec4-84e9-222e28591ceb)
-https://github.com/feivaoco/assets_repositorios/assets/52841258/8883836b-9451-4015-8d39-9688a66d0741
-
 
 
 
