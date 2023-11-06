@@ -17,9 +17,13 @@
 #ifdef GRABAR_
 //#define MSF_GIF_IMPL
 #include <time.h>
-#define TIEMPO_LAPSO_GIF .1
+#define TIEMPO_LAPSO_GIF .15
 #include "msf_gif.h"
 #endif //GRABAR_ 
+
+
+//#define RELEASE_
+#define DEVELOPMENT_
 
 
 int main(void){
@@ -69,8 +73,16 @@ int main(void){
     libpd_add_float(1.0f);
     libpd_finish_message("pd", "dsp");
 
+    #ifdef RELEASE_
+    // open patch       [; pd open file folder(
+    libpd_openfile("sonidos.pd", "assets");
+    #endif //RELEASE_
+
+    #ifdef DEVELOPMENT_
     // open patch       [; pd open file folder(
     libpd_openfile("sonidos.pd", "../pd");
+    #endif //DEVELOPMENT_
+
     Pa_StartStream(stream);
 
     ///////////////
@@ -108,7 +120,14 @@ int main(void){
 
     // SETUP RAYLIB
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
+    #ifdef RELEASE_
+    SetWindowIcon(LoadImage("assets/snasket.png"));
+    #endif //RELEASE_
+    
+    #ifdef DEVELOPMENT_
     SetWindowIcon(LoadImage("../resources/snasket.png"));
+    #endif //DEVELOPMENT_
+
     SetTargetFPS(FLAG_VSYNC_HINT);
     SetExitKey(KEY_NULL);
     /////////////////////////
