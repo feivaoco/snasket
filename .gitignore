@@ -1,2 +1,5 @@
 #ignorar la carpeta de .vscode
 .vscode
+
+#ignorar gitignore
+credenciales.txt
