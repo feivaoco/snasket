@@ -1,6 +1,11 @@
+#define aguanta
 #ifdef aguanta
+
 #include "ray/raylib.h"
 #include "ray/rlgl.h"
+
+
+#include "mysql/mysql.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -29,24 +34,10 @@
 #endif //aguanta
 
 
-//#define aguanta
 
-#include <stdio.h>
-#include <mysql/mysql.h>
-#include <stdlib.h>
 
 
 int main(void){
-
-    MYSQL *con = mysql_init(NULL);
-
-
-
-
-
-
-
-
     #ifdef aguanta
 
     // SETUP LIBPD
@@ -124,10 +115,6 @@ int main(void){
    
     
     //////////////
-    
-
-    
-
 
     // SETUP GIF RECORDER
     #ifdef GRABAR_ 
@@ -137,7 +124,6 @@ int main(void){
     msf_gif_begin(&gifState, jueguito_vars->sW, jueguito_vars->sH);
     #endif //GRABAR_ 
     /////////////////////
-
 
     // SETUP RAYLIB
     InitWindow(jueguito_vars->sW, jueguito_vars->sH, "snasket");
@@ -171,12 +157,16 @@ int main(void){
             case EnMenuTerminado:
                 update_menu_terminar(snake_p, jueguito_vars);
                 break;
+            case EnSubmitRecord:
+                update_menu_submit_score(jueguito_vars);
+                break;
+            case EnScoreboard:
+                update_menu_scoreboard(jueguito_vars);
+                break;
         }
         
         
-        BeginDrawing();
-        
-        
+        BeginDrawing();        
         // SWITCH PARA DRAW
         switch (jueguito_vars->estados){
             case EnMenuInicio:
@@ -191,11 +181,18 @@ int main(void){
             case EnMenuTerminado:
                 draw_menu_terminar(snake_p, jueguito_vars);
                 break;
+            case EnSubmitRecord:
+                draw_menu_submit_score(jueguito_vars);
+                break;
+            case EnScoreboard:
+                draw_menu_scoreboard(jueguito_vars);
+                break;
         }
 
 
-
-
+        //Vector2 mv = GetMousePosition();
+        //Rectangle mr = (Rectangle){mv.x-5,mv.y-4,14,18};
+        //DrawRectangleRec(mr,RED);
         //DrawFPS(5, 5);   
         
         EndDrawing();

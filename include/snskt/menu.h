@@ -18,10 +18,16 @@ enum ESTADOS_JUEGUITO{
     EnJueguito      = 2,
     // Estado en el que se pausa el jueguito
     // este estado solo se llama cuando se esta jugando
-    EnMenuPausa     = 4,
+    EnMenuPausa     = 3,
     // Estado que se llama cuando se termina el jueguito o
     // cuando menu de pausa lo llama para terminar el jueguito
-    EnMenuTerminado = 8
+    EnMenuTerminado = 4,
+    // Estado en el que se carga el score del jugador a la base de datos
+    // Solo se llega a este estado desde el estado de EnMenuTerminado 
+    EnSubmitRecord = 5,
+    // Estado para visualizar los scores en la base de datos
+    EnScoreboard = 6
+
 };
 
 
@@ -34,6 +40,12 @@ void draw_menu_pausa(nodoSnake_t* s,jueguito_t *jueguito_vars);
 
 void update_menu_terminar(nodoSnake_t* s,jueguito_t *jv);
 void draw_menu_terminar(nodoSnake_t* s,jueguito_t *jv);
+
+void update_menu_submit_score(jueguito_t *jv);
+void draw_menu_submit_score(jueguito_t *jv);
+
+void update_menu_scoreboard(jueguito_t *jv);
+void draw_menu_scoreboard(jueguito_t *jv);
 
 
 #endif //SNAKE_MENU_H_

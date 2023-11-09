@@ -1,9 +1,10 @@
-
 #ifndef SNAKE_H_
 #define SNAKE_H_
 
 #include "ray/raylib.h"
 #include "defs.h"
+
+
 
 #define paletas_cantidad 10
 
@@ -65,8 +66,12 @@ typedef struct jueguito_t{
     u8 estados_menu_pausa;
     // estados del menu pausa para el highlight de opciones
     u8 estados_menu_terminado;
+    // estados del menu submit record
+    u8 estados_menu_submit_record;
+    // estados del menu scoreboard
+    u8 estados_menu_scoreboard;
 
-    // estado sonido del menu
+    // estado sonido de los menu
     u8 estado_sonido_opcion;
 
 
@@ -75,6 +80,7 @@ typedef struct jueguito_t{
 
     // volumen del jueguito
     s8 volumen;
+
 
 }jueguito_t;
 

@@ -23,7 +23,7 @@ void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     jueguito_vars->estados_menu_inicio = 0;
     Vector2 mv = GetMousePosition();
     Rectangle mr = (Rectangle){mv.x-5,mv.y-4,14,18};
-    if(CheckCollisionRecs(mr,(Rectangle){jueguito_vars->sW/4, jueguito_vars->sH/2-120, jueguito_vars->sW/2,120})){
+    if(CheckCollisionRecs(mr,(Rectangle){jueguito_vars->sW/4-120, jueguito_vars->sH/2-160, jueguito_vars->sW/4+40,120})){
         if(!(jueguito_vars->estado_sonido_opcion & 1)){
             libpd_bang("bHover");
             jueguito_vars->estado_sonido_opcion += 1;
@@ -57,6 +57,15 @@ void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
         }
         jueguito_vars->estados_menu_inicio = 4;
     }else{jueguito_vars->estado_sonido_opcion = jueguito_vars->estado_sonido_opcion & 247;}
+
+    
+    if(CheckCollisionRecs(mr,(Rectangle){jueguito_vars->sW/2-45, jueguito_vars->sH/2-160, jueguito_vars->sW/2+10,120})){
+        if(!(jueguito_vars->estado_sonido_opcion & 16)){
+            libpd_bang("bHover");
+            jueguito_vars->estado_sonido_opcion += 16;
+        }
+        jueguito_vars->estados_menu_inicio = 5;
+    }else{jueguito_vars->estado_sonido_opcion = jueguito_vars->estado_sonido_opcion & 239;}
 
 
     switch(jueguito_vars->estados_menu_inicio){
@@ -100,64 +109,151 @@ void update_menu_inicio(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
             }
             break;
         
+        case 5:
+            SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+            if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+                jueguito_vars->estados = EnScoreboard;
+                jueguito_vars->estados_menu_scoreboard = 0;
+                return;
+            }
+            break;
+        
     }
     
 }
 
 void draw_menu_inicio(jueguito_t *jv){
     ClearBackground(paletas[jv->index_paleta][1]);
-    DrawText("SNASKET",70, 80, 160, paletas[jv->index_paleta][2]);
+    DrawText("SNASKET",130, 20, 130, paletas[jv->index_paleta][2]);
     DrawText(TextFormat("%d",jv->volumen),jv->sW/2+175, jv->sH/2+115, 80, paletas[jv->index_paleta][2]);
     DrawText("VOLUMEN",jv->sW/2+35, jv->sH/2+220, 70, paletas[jv->index_paleta][2]);
     switch(jv->estados_menu_inicio){
         case 0:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
-            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-120, jv->sH/2-160, jv->sW/4+40,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/4-95, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
             DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]); 
             
             DrawTriangle((Vector2){jv->sW-160, jv->sH/2+100},(Vector2){jv->sW-160, jv->sH/2+200}, (Vector2){jv->sW-160+100,jv->sH/2+150},paletas[jv->index_paleta][0]);
             DrawTriangle((Vector2){jv->sW/2+20,jv->sH/2+150},(Vector2){jv->sW/2+120, jv->sH/2+200},(Vector2){jv->sW/2+120, jv->sH/2+100},paletas[jv->index_paleta][0]);
+
+            
+            DrawRectangle(jv->sW/2-45, jv->sH/2-160, jv->sW/2+10,120,paletas[jv->index_paleta][0]);
+            DrawText("SCOREBOARD",jv->sW/2-20, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             break;
         case 1:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][5]);
-            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][4]);
+            DrawRectangle(jv->sW/4-120, jv->sH/2-160, jv->sW/4+40,120,paletas[jv->index_paleta][5]);
+            DrawText("START",jv->sW/4-95, jv->sH/2-130, 60, paletas[jv->index_paleta][4]);
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
             DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]); 
             
             DrawTriangle((Vector2){jv->sW-160, jv->sH/2+100},(Vector2){jv->sW-160, jv->sH/2+200}, (Vector2){jv->sW-160+100,jv->sH/2+150},paletas[jv->index_paleta][0]);
             DrawTriangle((Vector2){jv->sW/2+20,jv->sH/2+150},(Vector2){jv->sW/2+120, jv->sH/2+200},(Vector2){jv->sW/2+120, jv->sH/2+100},paletas[jv->index_paleta][0]);
+            
+            DrawRectangle(jv->sW/2-45, jv->sH/2-160, jv->sW/2+10,120,paletas[jv->index_paleta][0]);
+            DrawText("SCOREBOARD",jv->sW/2-20, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             break;
         case 2:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
-            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-120, jv->sH/2-160, jv->sW/4+40,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/4-95, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][5]);
             DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][4]); 
 
             DrawTriangle((Vector2){jv->sW-160, jv->sH/2+100},(Vector2){jv->sW-160, jv->sH/2+200}, (Vector2){jv->sW-160+100,jv->sH/2+150},paletas[jv->index_paleta][0]);
             DrawTriangle((Vector2){jv->sW/2+20,jv->sH/2+150},(Vector2){jv->sW/2+120, jv->sH/2+200},(Vector2){jv->sW/2+120, jv->sH/2+100},paletas[jv->index_paleta][0]);
+            
+            DrawRectangle(jv->sW/2-45, jv->sH/2-160, jv->sW/2+10,120,paletas[jv->index_paleta][0]);
+            DrawText("SCOREBOARD",jv->sW/2-20, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             break;
         case 3:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
-            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-120, jv->sH/2-160, jv->sW/4+40,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/4-95, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
             DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]);
             
             DrawTriangle((Vector2){jv->sW-160, jv->sH/2+100},(Vector2){jv->sW-160, jv->sH/2+200}, (Vector2){jv->sW-160+100,jv->sH/2+150},paletas[jv->index_paleta][5]);
             DrawTriangle((Vector2){jv->sW/2+20,jv->sH/2+150},(Vector2){jv->sW/2+120, jv->sH/2+200},(Vector2){jv->sW/2+120, jv->sH/2+100},paletas[jv->index_paleta][0]);
+            
+            DrawRectangle(jv->sW/2-45, jv->sH/2-160, jv->sW/2+10,120,paletas[jv->index_paleta][0]);
+            DrawText("SCOREBOARD",jv->sW/2-20, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             break;
         case 4:
-            DrawRectangle(jv->sW/4, jv->sH/2-120, jv->sW/2,120,paletas[jv->index_paleta][0]);
-            DrawText("START",jv->sW/2-100, jv->sH/2-90, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-120, jv->sH/2-160, jv->sW/4+40,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/4-95, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
             DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]); 
             
             DrawTriangle((Vector2){jv->sW-160, jv->sH/2+100},(Vector2){jv->sW-160, jv->sH/2+200}, (Vector2){jv->sW-160+100,jv->sH/2+150},paletas[jv->index_paleta][0]);
             DrawTriangle((Vector2){jv->sW/2+20,jv->sH/2+150},(Vector2){jv->sW/2+120, jv->sH/2+200},(Vector2){jv->sW/2+120, jv->sH/2+100},paletas[jv->index_paleta][5]);
+            
+            DrawRectangle(jv->sW/2-45, jv->sH/2-160, jv->sW/2+10,120,paletas[jv->index_paleta][0]);
+            DrawText("SCOREBOARD",jv->sW/2-20, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
             break;
+        case 5:
+            DrawRectangle(jv->sW/4-120, jv->sH/2-160, jv->sW/4+40,120,paletas[jv->index_paleta][0]);
+            DrawText("START",jv->sW/4-95, jv->sH/2-130, 60, paletas[jv->index_paleta][5]);
+            DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
+            DrawText("SOUND TEST",jv->sW/4-76, jv->sH/2+125, 30, paletas[jv->index_paleta][5]); 
+            
+            DrawTriangle((Vector2){jv->sW-160, jv->sH/2+100},(Vector2){jv->sW-160, jv->sH/2+200}, (Vector2){jv->sW-160+100,jv->sH/2+150},paletas[jv->index_paleta][0]);
+            DrawTriangle((Vector2){jv->sW/2+20,jv->sH/2+150},(Vector2){jv->sW/2+120, jv->sH/2+200},(Vector2){jv->sW/2+120, jv->sH/2+100},paletas[jv->index_paleta][0]);
 
+            
+            DrawRectangle(jv->sW/2-45, jv->sH/2-160, jv->sW/2+10,120,paletas[jv->index_paleta][5]);
+            DrawText("SCOREBOARD",jv->sW/2-20, jv->sH/2-130, 60, paletas[jv->index_paleta][4]);
+            break;
     }
 }
+
+
+void update_menu_scoreboard(jueguito_t *jv){
+    // CAMBIAR LA PALETA DE COLORES
+    switch(GetKeyPressed()){
+        case KEY_F1:
+            jv->index_paleta += 1;
+            if(jv->index_paleta >= paletas_cantidad)
+                jv->index_paleta = 0;
+            break;
+        case KEY_F2:
+            jv->index_paleta -= 1;
+            if(jv->index_paleta < 0)
+                jv->index_paleta = paletas_cantidad - 1;
+            break;
+    }
+
+    switch(jv->estados_menu_scoreboard){
+        case 0:
+
+            break;
+    
+    }
+
+}
+void draw_menu_scoreboard(jueguito_t *jv){
+    u32 xL = (jv->sW/6)-120;
+    u32 xR = xL*28;
+    u32 yU = (jv->sH/6)-100;
+    u32 yD = yU*42;
+
+    BeginScissorMode(xL, yU, xR, yD);
+    
+    ClearBackground(paletas[jv->index_paleta][1]);
+
+    switch(jv->estados_menu_submit_record){
+        case 0:
+            DrawText("Uniendose a\nbase de datos...",xR/2-130, yD/2-60, 50, paletas[jv->index_paleta][2]);
+            break;        
+    }
+
+
+    EndScissorMode();    
+
+}
+
+
+
+
 
 void update_menu_pausa(nodoSnake_t *snake_cabeza,jueguito_t *jueguito_vars){
     // CAMBIAR LA PALETA DE COLORES
@@ -325,16 +421,15 @@ void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
 
     Vector2 mv = GetMousePosition();
     Rectangle mr = (Rectangle){mv.x-5,mv.y-4,14,18};
-    #ifdef BD_DISPONIBLE
-    if(CheckCollisionRecs(mr,(Rectangle){jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60})){
+    
+    if(CheckCollisionRecs(mr,(Rectangle){jv->sW/4+50, jv->sH/4 + 90, jv->sW/2-90,60})){
         if(!(jv->estado_sonido_opcion & 1)){
             libpd_bang("bHover");
             jv->estado_sonido_opcion += 1;
         }
         jv->estados_menu_terminado = 1;
     }else{jv->estado_sonido_opcion = jv->estado_sonido_opcion & 254;}
-    #endif //BD_DISPONIBLE
-
+    
     if(CheckCollisionRecs(mr,(Rectangle){jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80})){
         if(!(jv->estado_sonido_opcion & 2)){
             libpd_bang("bHover");
@@ -357,12 +452,16 @@ void update_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
             break;
         
-        #ifdef BD_DISPONIBLE
         case 1:
-            // Caso en la conexion de datos para cargar puntaje a la base de datos    
+            SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+            if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+                jv->estados = EnSubmitRecord;
+                jv->estados_menu_submit_record = 0;
+                return;
+            }
             break;
-        #endif //BD_DISPONIBLE
-
+        
         case 2:
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
             if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
@@ -390,28 +489,30 @@ void draw_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
     ClearBackground(paletas[jv->index_paleta][4]);
     const char *p=TextFormat("%d", jv->nodos_cantidad);
     const char* scoreText = TextFormat("SCORE: %s", p);
-    DrawText(scoreText,jv->sW/2 - 260,jv->sH/4 ,86,paletas[jv->index_paleta][2]);
+    DrawText(scoreText,jv->sW/2 - 220,jv->sH/4 ,86,paletas[jv->index_paleta][2]);
     switch(jv->estados_menu_terminado){
         case 0:
-            #ifdef BD_DISPONIBLE
-            DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,BLACK);
-            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4+50, jv->sH/4 + 90, jv->sW/2-90,60,paletas[jv->index_paleta][0]);
+            DrawText("SUBMIT SCORE",jv->sW/4+70, jv->sH/4 + 100, 40, paletas[jv->index_paleta][5]);   
+                        
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
             DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][5]);   
             DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
             DrawText("MENU",jv->sW/2+130, jv->sH/2+120, 40, paletas[jv->index_paleta][5]); 
             break;
         case 1:
-            #ifdef BD_DISPONIBLE
-            DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,WHITE);
-            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4+50, jv->sH/4 + 90, jv->sW/2-90,60,paletas[jv->index_paleta][5]);
+            DrawText("SUBMIT SCORE",jv->sW/4+70, jv->sH/4 + 100, 40, paletas[jv->index_paleta][4]);   
+            
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
+            DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][5]);   
             DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
+            DrawText("MENU",jv->sW/2+130, jv->sH/2+120, 40, paletas[jv->index_paleta][5]); 
             break;
         case 2:
-            #ifdef BD_DISPONIBLE
-            DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,BLACK);
-            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4+50, jv->sH/4 + 90, jv->sW/2-90,60,paletas[jv->index_paleta][0]);
+            DrawText("SUBMIT SCORE",jv->sW/4+70, jv->sH/4 + 100, 40, paletas[jv->index_paleta][5]);   
+            
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][5]);
             DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][4]);  
             DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][0]);
@@ -419,9 +520,9 @@ void draw_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
 
             break;
         case 3:
-            #ifdef BD_DISPONIBLE
-            DrawRectangle(jv->sW/4+120, jv->sH/4 + 90, jv->sW/2-240,60,BLACK);
-            #endif //BD_DISPONIBLE
+            DrawRectangle(jv->sW/4+50, jv->sH/4 + 90, jv->sW/2-90,60,paletas[jv->index_paleta][0]);
+            DrawText("SUBMIT SCORE",jv->sW/4+70, jv->sH/4 + 100, 40, paletas[jv->index_paleta][5]);   
+            
             DrawRectangle(jv->sW/4-80, jv->sH/2+100, jv->sW/2-240,80, paletas[jv->index_paleta][0]);
             DrawText("RESTART",jv->sW/4-74, jv->sH/2+120, 40, paletas[jv->index_paleta][5]); 
             DrawRectangle(jv->sW/2+80, jv->sH/2+100, jv->sW/2-240,80,paletas[jv->index_paleta][5]);
@@ -430,4 +531,55 @@ void draw_menu_terminar(nodoSnake_t *s,jueguito_t *jv){
             break;
     }
 
+}
+
+
+
+
+
+
+
+void update_menu_submit_score(jueguito_t *jv){
+    // CAMBIAR LA PALETA DE COLORES
+    switch(GetKeyPressed()){
+        case KEY_F1:
+            jv->index_paleta += 1;
+            if(jv->index_paleta >= paletas_cantidad)
+                jv->index_paleta = 0;
+            break;
+        case KEY_F2:
+            jv->index_paleta -= 1;
+            if(jv->index_paleta < 0)
+                jv->index_paleta = paletas_cantidad - 1;
+            break;
+    }
+
+    switch(jv->estados_menu_submit_record){
+        case 0:
+
+            break;
+    }
+
+
+}
+
+void draw_menu_submit_score(jueguito_t *jv){
+    u32 xL = (jv->sW/6)-120;
+    u32 xR = xL*28;
+    u32 yU = (jv->sH/6)-100;
+    u32 yD = yU*42;
+
+    BeginScissorMode(xL, yU, xR, yD);
+    
+    ClearBackground(paletas[jv->index_paleta][1]);
+
+    switch(jv->estados_menu_submit_record){
+        case 0:
+            DrawText("Uniendose a\nbase de datos...",xR/2-130, yD/2-60, 50, paletas[jv->index_paleta][2]);
+            break;        
+    }
+
+
+    EndScissorMode();    
+    
 }
