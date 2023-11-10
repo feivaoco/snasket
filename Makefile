@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =	\
+CFLAGS = -O1	\
 		-Iinclude -Llib \
 		-lmysql -lws2_32 -lwsock32 -lsecur32 \
 		-lraylib -lopengl32 -lgdi32 -lwinmm \

@@ -5,7 +5,7 @@ Titulo inspirado en "Caskets" del NehruvianDOOM
 ![gif_snasket_1699308142](https://github.com/feivaoco/assets_repositorios/assets/52841258/fc949eb9-1656-4ec4-84e9-222e28591ceb)
 
 
-#### Advertencia
+## Advertencia
 Tienes que poner en comentario las siguientes lineas de codigo para que compile con gcc.
 Esto porque raylib tiene conflictos con windows.h, este lo usa libmysql. Igualmente como no
 se compila nada de windows.h entonces no habra problemas si se comentan. 

@@ -52,6 +52,8 @@
 // before printing.
 typedef uint64_t my_ulonglong;
 
+#define MYSQL_ABI_CHECK
+
 #ifndef my_socket_defined
 #define my_socket_defined
 #if defined(_WIN32) && !defined(MYSQL_ABI_CHECK)

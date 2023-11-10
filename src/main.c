@@ -5,6 +5,7 @@
 #include "ray/rlgl.h"
 
 
+#include "mysql/mysql.h"
 
 #include <stdint.h>
 #include <stdlib.h>

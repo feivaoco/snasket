@@ -81,8 +81,9 @@ typedef struct jueguito_t{
     // volumen del jueguito
     s8 volumen;
 
-    // variable de conexion sql
+    // conecxion mysql
     MYSQL* con;
+
 }jueguito_t;
 
 void jugando_snake(nodoSnake_t *snake_cabeza, jueguito_t *jueguito_vars);
