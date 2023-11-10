@@ -4,7 +4,7 @@ CFLAGS =	\
 		-lmysql -lws2_32 -lwsock32 -lsecur32 \
 		-lraylib -lopengl32 -lgdi32 -lwinmm \
 		-llibpd -lportaudio \
-		-mwindows
+		-mwindows 
 
 		#-std=c99 
 		# para incluir las librerias y headers en la carpeta lib e include

@@ -5,8 +5,22 @@ Titulo inspirado en "Caskets" del NehruvianDOOM
 ![gif_snasket_1699308142](https://github.com/feivaoco/assets_repositorios/assets/52841258/fc949eb9-1656-4ec4-84e9-222e28591ceb)
 
 
+#### Advertencia
+Tienes que poner en comentario las siguientes lineas de codigo para que compile con gcc.
+Esto porque raylib tiene conflictos con windows.h, este lo usa libmysql. Igualmente como no
+se compila nada de windows.h entonces no habra problemas si se comentan. 
+Tambien voy a resaltar que dejare de usar raylib hasta que arreglen ese problema, intente compilar desde
+el source code pero mi compu sigue dando problemas de path not found cuando le doy a make en el src del
+raylib.
 
+En el archivo winuser.h
+- Linea 3760 la función ShowCursor(WINBOOL bShow);
+- Linea 3479 a 3482 las funciones DrawTextA, DrawTextW, DrawTextExA, DrawTextExW
+- Linea 2282 la función CloseWindow
+- Linea 4200 a 4208 del #define LoadImage a la funcion GetIconInfo 
 
+En el archivo wingdi.h
+- Linea 3158 la funcion Rectangle
 
 ##### raylib
 <https://github.com/raysan5/raylib>

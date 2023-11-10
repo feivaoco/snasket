@@ -4,7 +4,7 @@
 #include "ray/raylib.h"
 #include "defs.h"
 
-
+#include "mysql/mysql.h"
 
 #define paletas_cantidad 10
 
@@ -81,7 +81,8 @@ typedef struct jueguito_t{
     // volumen del jueguito
     s8 volumen;
 
-
+    // variable de conexion sql
+    MYSQL* con;
 }jueguito_t;
 
 void jugando_snake(nodoSnake_t *snake_cabeza, jueguito_t *jueguito_vars);
