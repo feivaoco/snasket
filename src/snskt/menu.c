@@ -206,6 +206,39 @@ void draw_menu_inicio(jueguito_t *jv){
     }
 }
 
+void conectar_a_db_scoreboard(jueguito_t* jv){
+    jv->con = mysql_init(NULL);
+
+    mysql_real_connect(jv->con, 
+                            //credenciales de base de datos 
+                            0, NULL, 0);
+    mysql_query(jv->con, "select scores.name_player, scores.score from scores order by scores.score desc");
+
+    MYSQL_RES *result = mysql_store_result(jv->con);
+
+    int num_fields = mysql_num_fields(result);
+
+    MYSQL_ROW row;
+
+
+    jv->scoreboard = MemAlloc(sizeof(player_db_t));
+    jv->scoreboard->sig  = NULL;
+    player_db_t *tmp = jv->scoreboard;
+
+    while ((row = mysql_fetch_row(result))){
+        tmp->name = row[0];
+        sscanf(row[1], "%d", &tmp->score);
+
+        tmp->sig = MemAlloc(sizeof(player_db_t));
+        tmp->sig->sig = NULL;
+        tmp = tmp->sig;
+    }
+
+    mysql_free_result(result);
+    mysql_close(jv->con);
+
+
+}
 
 void update_menu_scoreboard(jueguito_t *jv){
     // CAMBIAR LA PALETA DE COLORES
@@ -224,26 +257,44 @@ void update_menu_scoreboard(jueguito_t *jv){
 
     switch(jv->estados_menu_scoreboard){
         case 0:
-
+            jv->init_dibujar_score=0;
+            conectar_a_db_scoreboard(jv);
+            //printf("\nSI SE PUDO\n");
+            jv->estados_menu_scoreboard = 1;
+            jv->dibujar_board = 1;
             break;
-    
+        
     }
-
 }
 void draw_menu_scoreboard(jueguito_t *jv){
+    player_db_t *tmp = jv->scoreboard;
     u32 xL = (jv->sW/6)-120;
     u32 xR = xL*28;
     u32 yU = (jv->sH/6)-100;
     u32 yD = yU*42;
-
+    u32 yMore = yU;
     BeginScissorMode(xL, yU, xR, yD);
     
     ClearBackground(paletas[jv->index_paleta][1]);
 
-    switch(jv->estados_menu_submit_record){
+    switch(jv->estados_menu_scoreboard){
         case 0:
             DrawText("Uniendose a\nbase de datos...",xR/2-130, yD/2-60, 50, paletas[jv->index_paleta][2]);
-            break;        
+            break;
+        case 1:
+            //printf("\nEntrando a dibujar\n");
+            
+            while(1){
+                yMore += 100;  
+                printf("%s %d \n", tmp->name, tmp->score);  
+                DrawText(TextFormat("%s",tmp->name),xR/4,yMore,40,paletas[jv->index_paleta][0]);
+                DrawText(TextFormat("%d",tmp->score),xR/4+420,yMore,40,paletas[jv->index_paleta][0]);
+                if( tmp->sig->sig == NULL){
+                    break;
+                }
+                tmp = tmp->sig;
+            }
+            break;  
     }
 
 

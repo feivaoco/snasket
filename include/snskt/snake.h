@@ -22,6 +22,14 @@ typedef struct nodoSnake_t{
 }nodoSnake_t;
 
 
+// estructura de usuarios para el scoreboard
+typedef struct player_db_t{
+    struct player_db_t* sig;
+    char* name;
+    s32 score;
+
+}player_db_t;
+
 // Estructura para usar las variables del juego en un puntero
 typedef struct jueguito_t{
     // direccion para comparar
@@ -84,6 +92,13 @@ typedef struct jueguito_t{
     // conecxion mysql
     MYSQL* con;
 
+    // scoreboard users
+    player_db_t* scoreboard;
+    // numero que controla cuando se incia a dibujar los scores
+    s64 init_dibujar_score;
+
+    // dibujar score estado para evitar overflow
+    u8 dibujar_board;
 }jueguito_t;
 
 void jugando_snake(nodoSnake_t *snake_cabeza, jueguito_t *jueguito_vars);
