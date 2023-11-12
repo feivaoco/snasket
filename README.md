@@ -2,8 +2,10 @@
 Titulo inspirado en "Caskets" del NehruvianDOOM
 
 
-![gif_snasket_1699308142](https://github.com/feivaoco/assets_repositorios/assets/52841258/fc949eb9-1656-4ec4-84e9-222e28591ceb)
 
+![gif_snasket_1699750084](https://github.com/feivaoco/snasket/assets/52841258/0c4109aa-97f8-4134-9cd1-bf3865bbb199)
+![Screenshot 2023-11-11 165208](https://github.com/feivaoco/snasket/assets/52841258/2e7fb2b5-d7ac-431b-8ebe-5ae8acaf59f6)
+![Screenshot 2023-11-11 165350](https://github.com/feivaoco/snasket/assets/52841258/19518956-54dd-4875-bb73-b83b48e8a498)
 
 
 ##### raylib
